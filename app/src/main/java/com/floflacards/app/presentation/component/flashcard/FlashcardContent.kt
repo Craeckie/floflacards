@@ -32,6 +32,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,7 @@ import coil.compose.AsyncImage
 import com.floflacards.app.R
 import com.floflacards.app.data.entity.FlashcardEntity
 import com.floflacards.app.data.model.FlashcardTheme
+import com.floflacards.app.util.PlecoLauncher
 import java.io.File
 
 /**
@@ -73,7 +76,9 @@ fun FlashcardContent(
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
-    
+    val context = LocalContext.current
+    val plecoAvailable = remember { PlecoLauncher.isAvailable(context) }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -102,7 +107,7 @@ fun FlashcardContent(
                     lineHeight = 24.sp,
                     fontWeight = FontWeight.Medium
                 )
-                
+
                 // Question image
                 flashcard.questionImagePath?.let { imagePath ->
                     FlashcardImage(
@@ -112,7 +117,7 @@ fun FlashcardContent(
                 }
             }
         }
-        
+
         if (!showAnswer) {
             // Show Answer button with theme-aware accent
             Button(
@@ -144,6 +149,20 @@ fun FlashcardContent(
                 }
             }
         } else {
+            if (plecoAvailable) {
+                TextButton(
+                    onClick = { PlecoLauncher.lookup(context, flashcard.question) },
+                    modifier = Modifier.height(32.dp)
+                ) {
+                    Text(
+                        text = "📖 Pleco",
+                        color = FlashcardColors.getQuestionTextColor(theme),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+
             // Answer section with theme-aware styling
             Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -164,7 +183,7 @@ fun FlashcardContent(
                         lineHeight = 24.sp,
                         fontWeight = FontWeight.Medium
                     )
-                    
+
                     // Answer image
                     flashcard.answerImagePath?.let { imagePath ->
                         FlashcardImage(

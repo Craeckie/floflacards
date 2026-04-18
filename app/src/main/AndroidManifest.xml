@@ -14,6 +14,11 @@
     
     <!-- No storage permissions needed - using SAF (Storage Access Framework) -->
 
+    <!-- Allow detecting and launching Pleco for Chinese word lookup -->
+    <queries>
+        <package android:name="com.pleco.chinesesystem" />
+    </queries>
+
     <application
         android:name=".FloatingLearningApplication"
         android:allowBackup="true"
