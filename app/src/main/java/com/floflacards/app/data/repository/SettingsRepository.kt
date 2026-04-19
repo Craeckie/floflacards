@@ -70,6 +70,24 @@ class SettingsRepository @Inject constructor(
         private const val KEY_BATTERY_OPTIMIZATION_SKIPPED = "battery_optimization_skipped"
         private const val KEY_BATTERY_OPTIMIZATION_EVER_DISABLED = "battery_optimization_ever_disabled"
         private const val KEY_APP_LOCALE = "app_locale"
+        private const val KEY_TARGET_RETENTION = "target_retention"
+        private const val DEFAULT_TARGET_RETENTION = 0.9f
+        private const val MIN_TARGET_RETENTION = 0.80f
+        private const val MAX_TARGET_RETENTION = 0.95f
+    }
+
+    fun getTargetRetention(): Double =
+        prefs.getFloat(KEY_TARGET_RETENTION, DEFAULT_TARGET_RETENTION)
+            .coerceIn(MIN_TARGET_RETENTION, MAX_TARGET_RETENTION)
+            .toDouble()
+
+    fun setTargetRetention(value: Double) {
+        prefs.edit()
+            .putFloat(
+                KEY_TARGET_RETENTION,
+                value.toFloat().coerceIn(MIN_TARGET_RETENTION, MAX_TARGET_RETENTION)
+            )
+            .apply()
     }
 
     fun getIntervalMinutes(): Int {

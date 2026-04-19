@@ -60,13 +60,19 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
         private const val EXTRA_FLASHCARD_QUESTION = "flashcard_question"
         private const val EXTRA_FLASHCARD_ANSWER = "flashcard_answer"
         private const val EXTRA_FLASHCARD_CATEGORY_ID = "flashcard_category_id"
-        private const val EXTRA_FLASHCARD_EASINESS_FACTOR = "flashcard_easiness_factor"
-        private const val EXTRA_FLASHCARD_REVIEW_COUNT = "flashcard_review_count"
         private const val EXTRA_FLASHCARD_IS_ENABLED = "flashcard_is_enabled"
         private const val EXTRA_FLASHCARD_CORRECT_COUNT = "flashcard_correct_count"
         private const val EXTRA_FLASHCARD_INCORRECT_COUNT = "flashcard_incorrect_count"
+        private const val EXTRA_FLASHCARD_HARD_COUNT = "flashcard_hard_count"
+        private const val EXTRA_FLASHCARD_EASY_COUNT = "flashcard_easy_count"
+        private const val EXTRA_FLASHCARD_STABILITY = "flashcard_stability"
+        private const val EXTRA_FLASHCARD_DIFFICULTY = "flashcard_difficulty"
+        private const val EXTRA_FLASHCARD_SCHEDULED_DAYS = "flashcard_scheduled_days"
+        private const val EXTRA_FLASHCARD_REPS = "flashcard_reps"
+        private const val EXTRA_FLASHCARD_LAPSES = "flashcard_lapses"
+        private const val EXTRA_FLASHCARD_STATE = "flashcard_state"
         private const val EXTRA_FLASHCARD_LAST_REVIEWED_AT = "flashcard_last_reviewed_at"
-        private const val EXTRA_FLASHCARD_COOLDOWN_UNTIL = "flashcard_cooldown_until"
+        private const val EXTRA_FLASHCARD_DUE_AT = "flashcard_due_at"
         private const val EXTRA_FLASHCARD_CREATED_AT = "flashcard_created_at"
         private const val EXTRA_FLASHCARD_UPDATED_AT = "flashcard_updated_at"
         private const val EXTRA_FLASHCARD_QUESTION_IMAGE_PATH = "flashcard_question_image_path"
@@ -83,13 +89,19 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
                 putExtra(EXTRA_FLASHCARD_QUESTION, flashcard.question)
                 putExtra(EXTRA_FLASHCARD_ANSWER, flashcard.answer)
                 putExtra(EXTRA_FLASHCARD_CATEGORY_ID, flashcard.categoryId)
-                putExtra(EXTRA_FLASHCARD_EASINESS_FACTOR, flashcard.easinessFactor)
-                putExtra(EXTRA_FLASHCARD_REVIEW_COUNT, flashcard.reviewCount)
                 putExtra(EXTRA_FLASHCARD_IS_ENABLED, flashcard.isEnabled)
                 putExtra(EXTRA_FLASHCARD_CORRECT_COUNT, flashcard.correctCount)
                 putExtra(EXTRA_FLASHCARD_INCORRECT_COUNT, flashcard.incorrectCount)
+                putExtra(EXTRA_FLASHCARD_HARD_COUNT, flashcard.hardCount)
+                putExtra(EXTRA_FLASHCARD_EASY_COUNT, flashcard.easyCount)
+                putExtra(EXTRA_FLASHCARD_STABILITY, flashcard.stability)
+                putExtra(EXTRA_FLASHCARD_DIFFICULTY, flashcard.difficulty)
+                putExtra(EXTRA_FLASHCARD_SCHEDULED_DAYS, flashcard.scheduledDays)
+                putExtra(EXTRA_FLASHCARD_REPS, flashcard.reps)
+                putExtra(EXTRA_FLASHCARD_LAPSES, flashcard.lapses)
+                putExtra(EXTRA_FLASHCARD_STATE, flashcard.state)
                 putExtra(EXTRA_FLASHCARD_LAST_REVIEWED_AT, flashcard.lastReviewedAt)
-                putExtra(EXTRA_FLASHCARD_COOLDOWN_UNTIL, flashcard.cooldownUntil)
+                putExtra(EXTRA_FLASHCARD_DUE_AT, flashcard.dueAt)
                 putExtra(EXTRA_FLASHCARD_CREATED_AT, flashcard.createdAt)
                 putExtra(EXTRA_FLASHCARD_UPDATED_AT, flashcard.updatedAt)
                 putExtra(EXTRA_FLASHCARD_QUESTION_IMAGE_PATH, flashcard.questionImagePath)
@@ -113,19 +125,15 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
                 return
             }
             
-            // Create demo flashcard with educational content
+            // Create demo flashcard with educational content. Defaults match a brand-new
+            // FSRS card (state=New, all FSRS fields zeroed) — the demo never goes through
+            // SrsUseCase so these values are never persisted.
             val demoFlashcard = FlashcardEntity(
                 id = -1L, // Special ID to indicate demo
                 categoryId = -1L,
                 question = context.getString(R.string.demo_welcome_question),
                 answer = context.getString(R.string.demo_welcome_answer),
                 isEnabled = true,
-                easinessFactor = 2.5f,
-                reviewCount = 0,
-                correctCount = 0,
-                incorrectCount = 0,
-                lastReviewedAt = 0L,
-                cooldownUntil = 0L,
                 createdAt = System.currentTimeMillis(),
                 updatedAt = System.currentTimeMillis()
             )
@@ -229,12 +237,18 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
             questionImagePath = intent.getStringExtra(EXTRA_FLASHCARD_QUESTION_IMAGE_PATH),
             answerImagePath = intent.getStringExtra(EXTRA_FLASHCARD_ANSWER_IMAGE_PATH),
             isEnabled = intent.getBooleanExtra(EXTRA_FLASHCARD_IS_ENABLED, true),
-            easinessFactor = intent.getFloatExtra(EXTRA_FLASHCARD_EASINESS_FACTOR, 2.5f),
-            reviewCount = intent.getIntExtra(EXTRA_FLASHCARD_REVIEW_COUNT, 0),
             correctCount = intent.getIntExtra(EXTRA_FLASHCARD_CORRECT_COUNT, 0),
             incorrectCount = intent.getIntExtra(EXTRA_FLASHCARD_INCORRECT_COUNT, 0),
+            hardCount = intent.getIntExtra(EXTRA_FLASHCARD_HARD_COUNT, 0),
+            easyCount = intent.getIntExtra(EXTRA_FLASHCARD_EASY_COUNT, 0),
+            stability = intent.getDoubleExtra(EXTRA_FLASHCARD_STABILITY, 0.0),
+            difficulty = intent.getDoubleExtra(EXTRA_FLASHCARD_DIFFICULTY, 0.0),
+            scheduledDays = intent.getIntExtra(EXTRA_FLASHCARD_SCHEDULED_DAYS, 0),
+            reps = intent.getIntExtra(EXTRA_FLASHCARD_REPS, 0),
+            lapses = intent.getIntExtra(EXTRA_FLASHCARD_LAPSES, 0),
+            state = intent.getIntExtra(EXTRA_FLASHCARD_STATE, 0),
             lastReviewedAt = intent.getLongExtra(EXTRA_FLASHCARD_LAST_REVIEWED_AT, 0),
-            cooldownUntil = intent.getLongExtra(EXTRA_FLASHCARD_COOLDOWN_UNTIL, 0),
+            dueAt = intent.getLongExtra(EXTRA_FLASHCARD_DUE_AT, 0),
             createdAt = intent.getLongExtra(EXTRA_FLASHCARD_CREATED_AT, System.currentTimeMillis()),
             updatedAt = intent.getLongExtra(EXTRA_FLASHCARD_UPDATED_AT, System.currentTimeMillis())
         )
