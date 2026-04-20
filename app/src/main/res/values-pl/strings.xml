@@ -256,7 +256,7 @@
     
     <string name="reset_flashcard_stats_title">Resetuj statystyki fiszki</string>
     <string name="reset_flashcard_stats_description">Czy na pewno chcesz zresetować statystyki dla tej karty:</string>
-    <string name="reset_flashcard_stats_details">To zresetuje: liczniki poprawnych/niepoprawnych/trudnych, współczynnik łatwości, liczbę powtórek i datę ostatniej powtórki.</string>
+    <string name="reset_flashcard_stats_details">To zresetuje: liczniki poprawnych/niepoprawnych/trudnych/łatwych oraz stan harmonogramu FSRS (stabilność, trudność, datę powtórki). Karta będzie traktowana jak nowa, dopóki nie zostanie ponownie oceniona.</string>
     <string name="reset_flashcard_stats_warning">Ta czynność nie może zostać cofnięta.</string>
     <string name="reset_flashcard_stats_confirm">Resetuj</string>
     <string name="reset_flashcard_stats_cancel">Anuluj</string>

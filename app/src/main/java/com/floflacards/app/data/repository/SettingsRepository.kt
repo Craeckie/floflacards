@@ -59,6 +59,10 @@ class SettingsRepository @Inject constructor(
     // App locale preference tracking - allows user to override system locale
     private val _appLocale = MutableStateFlow(getAppLocale())
     val appLocale: StateFlow<Language> = _appLocale.asStateFlow()
+
+    // FSRS target retention — observed by the settings slider
+    private val _targetRetention = MutableStateFlow(getTargetRetention())
+    val targetRetention: StateFlow<Double> = _targetRetention.asStateFlow()
     
     companion object {
         private const val KEY_INTERVAL_MINUTES = "interval_minutes"
@@ -82,12 +86,11 @@ class SettingsRepository @Inject constructor(
             .toDouble()
 
     fun setTargetRetention(value: Double) {
+        val clamped = value.toFloat().coerceIn(MIN_TARGET_RETENTION, MAX_TARGET_RETENTION)
         prefs.edit()
-            .putFloat(
-                KEY_TARGET_RETENTION,
-                value.toFloat().coerceIn(MIN_TARGET_RETENTION, MAX_TARGET_RETENTION)
-            )
+            .putFloat(KEY_TARGET_RETENTION, clamped)
             .apply()
+        _targetRetention.value = clamped.toDouble()
     }
 
     fun getIntervalMinutes(): Int {

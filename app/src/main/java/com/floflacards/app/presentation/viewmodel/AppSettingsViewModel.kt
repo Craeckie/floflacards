@@ -58,6 +58,13 @@ class AppSettingsViewModel @Inject constructor(
      * CRITICAL: This controls app language independently from system locale
      */
     val appLocale: StateFlow<Language> = settingsManager.appLocale
+
+    /** FSRS target retention (0.80–0.95). Higher = more reviews, less forgetting. */
+    val targetRetention: StateFlow<Double> = settingsManager.targetRetention
+
+    fun setTargetRetention(value: Double) {
+        settingsManager.setTargetRetention(value)
+    }
     
     /**
      * Updates the app theme preference

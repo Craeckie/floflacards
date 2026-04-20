@@ -256,7 +256,7 @@
     
     <string name="reset_flashcard_stats_title">Lernkarten-Statistiken zurücksetzen</string>
     <string name="reset_flashcard_stats_description">Möchtest du die Statistiken für diese Karte zurücksetzen:</string>
-    <string name="reset_flashcard_stats_details">Dies setzt zurück: Richtig/Falsch/Schwer-Zähler, Einfachheitsfaktor, Wiederholungsanzahl und letztes Wiederholungsdatum.</string>
+    <string name="reset_flashcard_stats_details">Dies setzt zurück: Richtig/Falsch/Schwer/Einfach-Zähler und den FSRS-Planungsstatus (Stabilität, Schwierigkeit, Fälligkeit). Die Karte verhält sich wie eine neue, bis sie erneut bewertet wird.</string>
     <string name="reset_flashcard_stats_warning">Diese Aktion kann nicht rückgängig gemacht werden.</string>
     <string name="reset_flashcard_stats_confirm">Zurücksetzen</string>
     <string name="reset_flashcard_stats_cancel">Abbrechen</string>

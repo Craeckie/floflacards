@@ -117,6 +117,13 @@
     <!-- Permissions section -->
     <string name="settings_permissions_title">Permissions</string>
     <string name="settings_permissions_subtitle">Manage app permissions and optimization</string>
+
+    <!-- Scheduling section (FSRS) -->
+    <string name="settings_scheduling_title">Scheduling</string>
+    <string name="settings_scheduling_subtitle">Tune the spaced repetition algorithm</string>
+    <string name="settings_target_retention_title">Target retention</string>
+    <string name="settings_target_retention_description">How well you want to remember your cards. Higher values mean more reviews but less forgetting. Default is 90%%.</string>
+    <string name="settings_target_retention_value">%1$d%%</string>
     
     <!-- Support section -->
     <string name="settings_support_title">Support</string>
@@ -262,7 +269,7 @@
     
     <string name="reset_flashcard_stats_title">Reset Flashcard Statistics</string>
     <string name="reset_flashcard_stats_description">Are you sure you want to reset statistics for:</string>
-    <string name="reset_flashcard_stats_details">This will reset: correct/incorrect/hard counts, easiness factor, review count, and last review date.</string>
+    <string name="reset_flashcard_stats_details">This will reset: correct/incorrect/hard/easy counts and the FSRS scheduling state (stability, difficulty, due date). The card will behave like a new one until rated again.</string>
     <string name="reset_flashcard_stats_warning">This action cannot be undone.</string>
     <string name="reset_flashcard_stats_confirm">Reset</string>
     <string name="reset_flashcard_stats_cancel">Cancel</string>

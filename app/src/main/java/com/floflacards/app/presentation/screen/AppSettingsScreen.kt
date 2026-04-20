@@ -70,6 +70,7 @@ fun AppSettingsScreen(
     val currentTheme by viewModel.appTheme.collectAsState()
     val currentFlashcardTheme by viewModel.flashcardTheme.collectAsState()
     val currentLanguage: Language by viewModel.appLocale.collectAsState()
+    val currentTargetRetention by viewModel.targetRetention.collectAsState()
     
     Scaffold(
         topBar = {
@@ -170,6 +171,19 @@ fun AppSettingsScreen(
                 ) {
                     BatteryOptimizationSettingItem(
                         viewModel = viewModel
+                    )
+                }
+            }
+
+            // Scheduling section — exposes the FSRS target-retention knob
+            item {
+                AppSettingsSection(
+                    title = stringResource(R.string.settings_scheduling_title),
+                    subtitle = stringResource(R.string.settings_scheduling_subtitle)
+                ) {
+                    TargetRetentionSettingItem(
+                        retention = currentTargetRetention,
+                        onRetentionChange = { viewModel.setTargetRetention(it) }
                     )
                 }
             }
@@ -725,6 +739,51 @@ private fun LanguageSettingItem(
                 tint = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f)
             )
         }
+    }
+}
+
+/**
+ * Slider for FSRS target retention. Lives inside an AppSettingsSection card,
+ * so this composable just supplies the label, current value, and the Slider
+ * itself. Range 0.80..0.95 in 0.01 steps (15 discrete positions).
+ */
+@Composable
+private fun TargetRetentionSettingItem(
+    retention: Double,
+    onRetentionChange: (Double) -> Unit
+) {
+    val percent = (retention * 100).toInt()
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.settings_target_retention_title),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = stringResource(R.string.settings_target_retention_value, percent),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        Text(
+            text = stringResource(R.string.settings_target_retention_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        Slider(
+            value = retention.toFloat(),
+            onValueChange = { onRetentionChange(it.toDouble()) },
+            valueRange = 0.80f..0.95f,
+            // 15 positions inclusive on both ends ⇒ steps = 13 (Compose counts intermediate stops only).
+            steps = 13
+        )
     }
 }
 
