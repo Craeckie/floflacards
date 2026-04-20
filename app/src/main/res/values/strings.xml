@@ -433,4 +433,10 @@
     <!-- Category context menu -->
     <string name="category_export_csv">Export as CSV</string>
     <string name="category_import_csv">Import from CSV</string>
+
+    <!-- Rating button labels (shown on long-press) -->
+    <string name="rating_again">Again</string>
+    <string name="rating_hard">Hard</string>
+    <string name="rating_good">Good</string>
+    <string name="rating_easy">Easy</string>
 </resources>

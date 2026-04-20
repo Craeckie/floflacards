@@ -420,4 +420,10 @@
     <!-- Category context menu - German -->
     <string name="category_export_csv">Als CSV exportieren</string>
     <string name="category_import_csv">Aus CSV importieren</string>
+
+    <!-- Rating button labels (shown on long-press) - German -->
+    <string name="rating_again">Nochmal</string>
+    <string name="rating_hard">Schwer</string>
+    <string name="rating_good">Gut</string>
+    <string name="rating_easy">Leicht</string>
 </resources>

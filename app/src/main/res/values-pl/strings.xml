@@ -367,4 +367,10 @@
     <string name="search_no_results">Nie znaleziono wyników</string>
     <string name="search_no_results_description">Spróbuj innego wyszukiwania lub wyczyść wyszukiwanie, aby zobaczyć wszystkie elementy</string>
     <string name="search_clear">Wyczyść wyszukiwanie</string>
+
+    <!-- Rating button labels (shown on long-press) - Polish -->
+    <string name="rating_again">Jeszcze raz</string>
+    <string name="rating_hard">Trudne</string>
+    <string name="rating_good">Dobre</string>
+    <string name="rating_easy">Łatwe</string>
 </resources>
