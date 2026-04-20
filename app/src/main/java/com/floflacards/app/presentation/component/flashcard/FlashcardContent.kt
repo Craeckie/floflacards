@@ -105,7 +105,8 @@ fun FlashcardContent(
                     fontSize = 17.sp,
                     textAlign = TextAlign.Center,
                     lineHeight = 24.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 // Question image
@@ -181,7 +182,8 @@ fun FlashcardContent(
                         fontSize = 17.sp,
                         textAlign = TextAlign.Center,
                         lineHeight = 24.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     // Answer image

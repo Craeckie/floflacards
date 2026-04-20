@@ -66,7 +66,8 @@ fun ModernHeaderSection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
+                .statusBarsPadding()
+                .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
