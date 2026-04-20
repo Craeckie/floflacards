@@ -1,0 +1,5 @@
+Version 1.1.0
+- Scheduling now uses FSRS (the modern spaced repetition algorithm used by Anki). Reviews should feel smarter, especially for cards you have seen many times.
+- Added an "Easy" rating button for cards you know well.
+- This update resets each card's scheduling state. Your review history (correct / incorrect / hard counts) is preserved, but cards will behave like new ones until they have been rated a few times under FSRS.
+- Added a "Target retention" setting (Scheduling) — controls how hard the scheduler pushes you. Default 90%.
