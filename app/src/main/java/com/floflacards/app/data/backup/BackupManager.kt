@@ -290,17 +290,22 @@ class BackupManager @Inject constructor(
                     correctCount = flashcard.correctCount,
                     incorrectCount = flashcard.incorrectCount,
                     hardCount = flashcard.hardCount,
-                    easinessFactor = flashcard.easinessFactor,
-                    reviewCount = flashcard.reviewCount,
+                    easyCount = flashcard.easyCount,
+                    stability = flashcard.stability,
+                    difficulty = flashcard.difficulty,
+                    scheduledDays = flashcard.scheduledDays,
+                    reps = flashcard.reps,
+                    lapses = flashcard.lapses,
+                    state = flashcard.state,
                     lastReviewedAt = flashcard.lastReviewedAt,
-                    cooldownUntil = flashcard.cooldownUntil,
+                    dueAt = flashcard.dueAt,
                     createdAt = flashcard.createdAt,
                     updatedAt = flashcard.updatedAt
                 )
             }
 
             // Calculate total reviews
-            val totalReviews = flashcards.sumOf { it.correctCount + it.incorrectCount }
+            val totalReviews = flashcards.sumOf { it.correctCount + it.incorrectCount + it.hardCount + it.easyCount }
 
             // Get current streak data
             val currentStreakData = streakPreferences.getStreakData()
@@ -422,10 +427,19 @@ class BackupManager @Inject constructor(
                         correctCount = flashcardBackup.correctCount,
                         incorrectCount = flashcardBackup.incorrectCount,
                         hardCount = flashcardBackup.hardCount,
-                        easinessFactor = flashcardBackup.easinessFactor,
-                        reviewCount = flashcardBackup.reviewCount,
+                        easyCount = flashcardBackup.easyCount,
+                        // FSRS fields. v1 backups deserialize with the entity-default
+                        // FSRS-New state, so legacy cards re-enter the FSRS pipeline as
+                        // unseen — the algorithm builds stability/difficulty from scratch
+                        // on the next review rather than guessing from SM-2's EF.
+                        stability = flashcardBackup.stability,
+                        difficulty = flashcardBackup.difficulty,
+                        scheduledDays = flashcardBackup.scheduledDays,
+                        reps = flashcardBackup.reps,
+                        lapses = flashcardBackup.lapses,
+                        state = flashcardBackup.state,
                         lastReviewedAt = flashcardBackup.lastReviewedAt,
-                        cooldownUntil = flashcardBackup.cooldownUntil,
+                        dueAt = flashcardBackup.dueAt,
                         createdAt = flashcardBackup.createdAt,
                         updatedAt = flashcardBackup.updatedAt
                     )

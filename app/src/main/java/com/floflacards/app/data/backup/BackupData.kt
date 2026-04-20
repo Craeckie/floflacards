@@ -26,7 +26,12 @@ import java.util.UUID
  */
 @Serializable
 data class BackupData(
-    val version: Int = 1,
+    /**
+     * v1: SM-2 fields (easinessFactor, reviewCount, cooldownUntil).
+     * v2: FSRS fields (stability, difficulty, scheduledDays, reps, lapses, state, dueAt).
+     * v1 backups are restored by mapping legacy fields to FSRS-New defaults.
+     */
+    val version: Int = 2,
     val backupId: String = UUID.randomUUID().toString(),
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
@@ -66,10 +71,18 @@ data class FlashcardBackup(
     val correctCount: Int,
     val incorrectCount: Int,
     val hardCount: Int,
-    val easinessFactor: Float,
-    val reviewCount: Int,
-    val lastReviewedAt: Long,
-    val cooldownUntil: Long,
+    val easyCount: Int = 0,
+    // FSRS scheduling state (v2+). Defaults match FlashcardEntity FSRS-New defaults
+    // so v1 backups deserialize cleanly — restore is then equivalent to "treat every
+    // legacy card as a New card for FSRS to re-learn."
+    val stability: Double = 0.0,
+    val difficulty: Double = 0.0,
+    val scheduledDays: Int = 0,
+    val reps: Int = 0,
+    val lapses: Int = 0,
+    val state: Int = 0,
+    val lastReviewedAt: Long = 0,
+    val dueAt: Long = 0,
     val createdAt: Long,
     val updatedAt: Long
 )

@@ -39,8 +39,9 @@ The app follows a clean architecture pattern with three layers:
 - `model/` — Data-layer models (`AppTheme`, `FlashcardTheme`, `Language`)
 
 **Domain layer** (`domain/`)
-- `usecase/` — Business logic: CSV import/export, backup CRUD, SRS scheduling (`SrsUseCase`), streak tracking (`SimpleStreakUseCase`), statistics
-- `model/` — Domain models (`SrsConfig`, `StreakData`, `InteractionMode`)
+- `fsrs/` — Pure-domain port of FSRS v6 (`Fsrs`, `FsrsCard`, `FsrsRating`, `FsrsCardState`, `FsrsGrade`, `FsrsParameters`). No Android/Room/Compose imports — JVM-unit-testable.
+- `usecase/` — Business logic: CSV import/export, backup CRUD, SRS scheduling (`SrsUseCase`, FSRS-backed), streak tracking (`SimpleStreakUseCase`), statistics
+- `model/` — Domain models (`FlashcardRating`, `StreakData`, `InteractionMode`)
 - `manager/ServiceStateManager` — Singleton tracking whether the overlay service is running
 
 **Presentation layer** (`presentation/`)
@@ -61,7 +62,15 @@ The app follows a clean architecture pattern with three layers:
 ## Key Architectural Notes
 
 - The overlay is rendered by `OverlayService` using Jetpack Compose drawn into a `ComposeView` added to the `WindowManager`. The service must implement lifecycle interfaces manually since it isn't an Activity.
-- `SettingsRepository` uses `SharedPreferences` directly (not DataStore). Settings include overlay interval, flashcard size/opacity, SRS config, selected category, and app theme/language.
+- `SettingsRepository` uses `SharedPreferences` directly (not DataStore). Settings include overlay interval, flashcard size/opacity, FSRS target retention (0.80–0.95, default 0.90), selected category, and app theme/language.
+
+### Scheduling: FSRS vs. overlay interval (TWO different clocks — keep them decoupled)
+
+- **Scheduling clock (FSRS, in days)** decides *which* card is shown next. `FlashcardEntity` carries the FSRS state per card (`stability`, `difficulty`, `scheduledDays`, `reps`, `lapses`, `state`, `dueAt`). `SrsUseCase` calls `Fsrs.apply()` on each rating and writes the new state + `dueAt = now + scheduledDays · 86_400_000` (Review) or short-term ms (Learning/Relearning). `FlashcardDao.getNextDueFlashcard` orders by state priority (Relearning → Learning → Review → New), then `dueAt`, then `difficulty`.
+- **Overlay clock (minutes, user-configurable)** decides *how often* the overlay pops up. Driven by `TimerForegroundService`; unchanged by FSRS. On each tick, the timer asks `getNextAvailableFlashcard()` — if nothing is due it falls back to the card closest to due, so the overlay never shows nothing while cards exist.
+- **Ratings** are `FlashcardRating { WRONG, HARD, GOOD, EASY, CLOSED }` (display name "Again" for `WRONG`). `CLOSED` (overlay dismissed) is a no-op for FSRS — state is left untouched. The four rating buttons live in `presentation/component/flashcard/FlashcardControls.kt`; layout collapses to a 2×2 grid below 240dp width.
+- **"Mastered" heuristic** (`StatisticsViewModel`): `stability ≥ 21d && reps ≥ 3`. FSRS difficulty is on a 1..10 scale where **low = easy, high = hard** — the inverse of the old SM-2 easiness factor. Anything that maps difficulty to a label/color must use this orientation.
+- **Migration** from SM-2 happened at DB v8 / backup v2. Legacy `easinessFactor`/`reviewCount`/`cooldownUntil` are gone — every card was treated as FSRS-`New` on upgrade (history counters preserved, scheduling state zeroed). Backup imports detect `BackupData.version` and apply the same treatment for v1 files.
 - Backup format is JSON serialized with `kotlinx.serialization`. The backup uses Android's Storage Access Framework (SAF) for file access.
 - CSV import/export supports a two-column format (front, back). Import shows a preview before saving.
 - Streak and statistics data are stored in separate `SharedPreferences` via `StreakPreferences`.

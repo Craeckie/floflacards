@@ -52,10 +52,13 @@ data class FlashcardStats(
         }
     }
     
+    // FSRS difficulty is on a 1..10 scale where LOW = easy and HIGH = hard,
+    // the inverse of the old SM-2 easiness factor. Keep the label semantics
+    // ("Easy"/"Medium"/"Hard") so the UI doesn't need to change.
     val difficultyLevel: String = when {
-        difficultyScore <= 1.5f -> "Hard"
-        difficultyScore <= 2.0f -> "Medium"
-        else -> "Easy"
+        difficultyScore <= 4.0f -> "Easy"
+        difficultyScore <= 7.0f -> "Medium"
+        else -> "Hard"
     }
     
     val totalAttempts: Int = correctCount + incorrectCount + hardCount // All attempts count for weighted success rate
@@ -108,8 +111,11 @@ class StatisticsViewModel @Inject constructor(
                 val allFlashcards = repository.getAllFlashcardsForStatistics()
                 val allCategories = repository.getAllCategories()
                 
-                // Calculate enhanced overall stats using new streak system
-                val masteredFlashcards = allFlashcards.count { it.easinessFactor >= 2.5f && it.reviewCount >= 3 }
+                // Mastered = card has reached high stability (≥21d ≈ 3 weeks) after at
+                // least 3 successful reviews. Stability is FSRS's interval-prediction
+                // memory strength, so this is roughly "the algorithm believes you'll
+                // still recall it 3 weeks out."
+                val masteredFlashcards = allFlashcards.count { it.stability >= 21.0 && it.reps >= 3 }
                 val totalFlashcards = allFlashcards.size
                 
                 // Use new simple streak system instead of complex historical calculation
@@ -129,8 +135,8 @@ class StatisticsViewModel @Inject constructor(
                         .sortedBy { it.createdAt } // Sort categories by creation date
                         .map { category ->
                             val categoryFlashcards = allFlashcards.filter { it.categoryId == category.id }
-                            val studiedCards = categoryFlashcards.count { it.reviewCount > 0 }
-                            val masteredCards = categoryFlashcards.count { it.easinessFactor >= 2.5f && it.reviewCount >= 3 }
+                            val studiedCards = categoryFlashcards.count { it.reps > 0 }
+                            val masteredCards = categoryFlashcards.count { it.stability >= 21.0 && it.reps >= 3 }
                             
                             val flashcardStats = categoryFlashcards.map { flashcard ->
                                 // Weighted success rate: Good=1.0, Hard=0.5, Wrong=0.0
