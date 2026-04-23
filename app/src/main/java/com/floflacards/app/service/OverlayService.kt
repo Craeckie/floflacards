@@ -319,9 +319,6 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
             closeOverlay()
             resumeTimerAfterInteraction()
         }
-        
-        // Auto-reset to normal mode after rating using extracted components
-        overlayComponents.resetToNormalMode()
     }
     
     private fun handleFlashcardClose(flashcard: FlashcardEntity) {

@@ -22,6 +22,7 @@ import android.content.SharedPreferences
 import com.floflacards.app.data.model.AppTheme
 import com.floflacards.app.data.model.FlashcardTheme
 import com.floflacards.app.data.model.Language
+import com.floflacards.app.data.source.FlashcardUiPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.floflacards.app.util.IntervalConstants
@@ -34,7 +35,8 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepository @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val flashcardUiPreferences: FlashcardUiPreferences
 ) {
     private val prefs: SharedPreferences = context.getSharedPreferences(
         "floating_learning_settings",
@@ -67,6 +69,12 @@ class SettingsRepository @Inject constructor(
     // App blocklist — overlay is suppressed while any of these packages is foreground
     private val _blocklist = MutableStateFlow(getBlocklist())
     val blocklist: StateFlow<Set<String>> = _blocklist.asStateFlow()
+
+    // Flashcard overlay opacity (0.1f..1.0f). Persisted in FlashcardUiPreferences;
+    // proxied here so the settings screen can observe/edit it the same way as
+    // other app-wide preferences.
+    private val _flashcardOpacity = MutableStateFlow(flashcardUiPreferences.getCurrentOpacity())
+    val flashcardOpacity: StateFlow<Float> = _flashcardOpacity.asStateFlow()
 
     companion object {
         private const val KEY_INTERVAL_MINUTES = "interval_minutes"
@@ -289,5 +297,10 @@ class SettingsRepository @Inject constructor(
 
     fun removeFromBlocklist(packageName: String) {
         setBlocklist(getBlocklist() - packageName)
+    }
+
+    fun setFlashcardOpacity(opacity: Float) {
+        flashcardUiPreferences.saveOpacity(opacity)
+        _flashcardOpacity.value = flashcardUiPreferences.getCurrentOpacity()
     }
 }

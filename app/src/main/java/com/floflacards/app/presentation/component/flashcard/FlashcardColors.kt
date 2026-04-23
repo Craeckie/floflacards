@@ -134,29 +134,10 @@ object FlashcardColors {
         )
     }
     
-    /**
-     * Get header background colors based on interaction mode with theme support
-     */
-    fun getHeaderBackgroundColor(
-        theme: FlashcardTheme = FlashcardTheme.DEFAULT_THEME,
-        mode: String = "NORMAL"
-    ): Color {
-        val themeColors = getThemeColors(theme)
-        return when (mode) {
-            "DRAG" -> Color(0xFF4CAF50).copy(alpha = 0.15f)
-            "RESIZE" -> Color(0xFFFF9800).copy(alpha = 0.15f)
-            "OPACITY" -> Color(0xFF2196F3).copy(alpha = 0.15f)
-            else -> themeColors.headerBackground
-        }
-    }
-    
-    /**
-     * Backward compatibility overload - maintains existing API
-     */
-    fun getHeaderBackgroundColor(mode: String): Color {
-        return getHeaderBackgroundColor(FlashcardTheme.DEFAULT_THEME, mode)
-    }
-    
+    fun getHeaderBackgroundColor(theme: FlashcardTheme = FlashcardTheme.DEFAULT_THEME): Color =
+        getThemeColors(theme).headerBackground
+
+
     /**
      * Get text color based on enabled state for overlay flashcards with theme support
      */

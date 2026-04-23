@@ -97,7 +97,11 @@
     <string name="settings_appearance_app_theme">Motyw aplikacji</string>
     <string name="settings_appearance_flashcard_theme">Motyw fiszek</string>
     <string name="settings_appearance_flashcard_description">Wybierz motyw dla unoszących się fiszek (niezależny od motywu aplikacji)</string>
-    
+    <string name="settings_appearance_flashcard_opacity">Przezroczystość fiszek</string>
+    <string name="settings_flashcard_opacity_title">Przezroczystość</string>
+    <string name="settings_flashcard_opacity_description">Dostosuj przezroczystość fiszki. Minimum 10%% zapewnia widoczność.</string>
+    <string name="settings_flashcard_opacity_value">%1$d%%</string>
+
     <!-- Theme descriptions - natural Polish phrasing -->
     <string name="theme_light_description">Zawsze używaj jasnego motywu</string>
     <string name="theme_dark_description">Zawsze używaj ciemnego motywu</string>
@@ -346,33 +350,6 @@
     
     <!-- Flashcard Show Answer Button - Polish -->
     <string name="flashcard_show_answer">Pokaż odpowiedź</string>
-    
-    <!-- Interaction Mode / Flashcard Settings - Polish -->
-    <string name="interaction_mode_title">⚙️ Tryb interakcji</string>
-    
-    <!-- Interaction Mode Names - Polish -->
-    <string name="interaction_mode_learning">Tryb nauki</string>
-    <string name="interaction_mode_drag">Przeciąganie</string>
-    <string name="interaction_mode_resize">Zmiana rozmiaru</string>
-    <string name="interaction_mode_opacity">Przezroczystość</string>
-    
-    <!-- Interaction Mode Descriptions - Polish -->
-    <string name="interaction_mode_learning_description">Standardowa obsługa fiszek</string>
-    <string name="interaction_mode_drag_description">Zmień pozycję fiszki</string>
-    <string name="interaction_mode_resize_description">Dostosuj rozmiar fiszki</string>
-    <string name="interaction_mode_opacity_description">Steruj przezroczystością</string>
-    
-    <!-- Interaction Mode Instructions - Polish -->
-    <string name="interaction_mode_learning_instruction">Standardowy tryb nauki – dotknij kart, żeby się uczyć</string>
-    <string name="interaction_mode_drag_instruction">Tryb przeciągania – przesuń fiszkę po ekranie</string>
-    <string name="interaction_mode_resize_instruction">Tryb zmiany rozmiaru – dostosuj rozmiar fiszki</string>
-    <string name="interaction_mode_opacity_instruction">Tryb przezroczystości – kontroluj przezroczystość (min. 10%)</string>
-    
-    <!-- Opacity Control Strings - Polish -->
-    <string name="opacity_control_label">👁️ Przezroczystość</string>
-    <string name="opacity_control_minimum">Minimum (10%)</string>
-    <string name="opacity_control_maximum">Maksimum (100%)</string>
-    <string name="opacity_control_description">Ustaw przezroczystość fiszki. Minimum 10%% zapewnia widoczność.</string>
     
     <!-- Search Functionality - Polish -->
     <string name="search_categories">Wyszukaj kategorie...</string>

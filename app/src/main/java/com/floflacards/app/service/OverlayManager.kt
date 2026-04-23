@@ -69,12 +69,7 @@ class OverlayManager(
     ): Boolean {
         try {
             val uiState = flashcardUiPreferences.getFlashcardUiState()
-            
-            // CRITICAL FIX: Ensure modal is not visible when starting a new overlay
-            if (uiState.isModalVisible) {
-                flashcardUiPreferences.saveModalVisible(false)
-            }
-            
+
             val layoutFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             } else {

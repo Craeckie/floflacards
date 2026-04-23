@@ -72,6 +72,7 @@ fun AppSettingsScreen(
     val currentFlashcardTheme by viewModel.flashcardTheme.collectAsState()
     val currentLanguage: Language by viewModel.appLocale.collectAsState()
     val currentTargetRetention by viewModel.targetRetention.collectAsState()
+    val currentFlashcardOpacity by viewModel.flashcardOpacity.collectAsState()
     
     Scaffold(
         topBar = {
@@ -160,6 +161,22 @@ fun AppSettingsScreen(
                     FlashcardThemeSelectionItem(
                         currentTheme = currentFlashcardTheme,
                         onThemeSelected = { theme -> viewModel.setFlashcardTheme(theme) }
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Flashcard Transparency subsection
+                    Text(
+                        text = stringResource(R.string.settings_appearance_flashcard_opacity),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    FlashcardOpacitySettingItem(
+                        opacity = currentFlashcardOpacity,
+                        onOpacityChange = { viewModel.setFlashcardOpacity(it) }
                     )
                 }
             }
@@ -799,6 +816,50 @@ private fun TargetRetentionSettingItem(
             valueRange = 0.80f..0.95f,
             // 15 positions inclusive on both ends ⇒ steps = 13 (Compose counts intermediate stops only).
             steps = 13
+        )
+    }
+}
+
+/**
+ * Slider for flashcard overlay transparency. Range 0.1..1.0 in 5% increments
+ * (18 discrete positions). 10% floor ensures the card stays visible.
+ */
+@Composable
+private fun FlashcardOpacitySettingItem(
+    opacity: Float,
+    onOpacityChange: (Float) -> Unit
+) {
+    val percent = (opacity * 100).toInt()
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.settings_flashcard_opacity_title),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = stringResource(R.string.settings_flashcard_opacity_value, percent),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        Text(
+            text = stringResource(R.string.settings_flashcard_opacity_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        Slider(
+            value = opacity,
+            onValueChange = onOpacityChange,
+            valueRange = 0.1f..1.0f,
+            // 18 positions inclusive ⇒ 16 intermediate stops.
+            steps = 16
         )
     }
 }

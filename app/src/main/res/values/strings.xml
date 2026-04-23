@@ -97,7 +97,11 @@
     <string name="settings_appearance_app_theme">App Theme</string>
     <string name="settings_appearance_flashcard_theme">Flashcard Theme</string>
     <string name="settings_appearance_flashcard_description">Choose theme for flashcard overlay (independent from app theme)</string>
-    
+    <string name="settings_appearance_flashcard_opacity">Flashcard Transparency</string>
+    <string name="settings_flashcard_opacity_title">Transparency</string>
+    <string name="settings_flashcard_opacity_description">Adjust the overlay\'s transparency. Minimum 10%% keeps the card visible.</string>
+    <string name="settings_flashcard_opacity_value">%1$d%%</string>
+
     <!-- Theme descriptions -->
     <string name="theme_light_description">Always use light theme</string>
     <string name="theme_dark_description">Always use dark theme</string>
@@ -359,33 +363,6 @@
     
     <!-- Flashcard Show Answer Button -->
     <string name="flashcard_show_answer">Show Answer</string>
-    
-    <!-- Interaction Mode / Flashcard Settings -->
-    <string name="interaction_mode_title">⚙️ Interaction Mode</string>
-    
-    <!-- Interaction Mode Names -->
-    <string name="interaction_mode_learning">Learning Mode</string>
-    <string name="interaction_mode_drag">Drag Mode</string>
-    <string name="interaction_mode_resize">Resize Mode</string>
-    <string name="interaction_mode_opacity">Opacity Mode</string>
-    
-    <!-- Interaction Mode Descriptions -->
-    <string name="interaction_mode_learning_description">Default flashcard learning</string>
-    <string name="interaction_mode_drag_description">Move flashcard position</string>
-    <string name="interaction_mode_resize_description">Adjust flashcard size</string>
-    <string name="interaction_mode_opacity_description">Control transparency</string>
-    
-    <!-- Interaction Mode Instructions -->
-    <string name="interaction_mode_learning_instruction">Default learning mode – tap cards to study</string>
-    <string name="interaction_mode_drag_instruction">Drag mode – move flashcard around screen</string>
-    <string name="interaction_mode_resize_instruction">Resize mode – adjust flashcard size</string>
-    <string name="interaction_mode_opacity_instruction">Opacity mode – control transparency (min 10%)</string>
-    
-    <!-- Opacity Control Strings -->
-    <string name="opacity_control_label">👁️ Opacity</string>
-    <string name="opacity_control_minimum">Minimum (10%)</string>
-    <string name="opacity_control_maximum">Maximum (100%)</string>
-    <string name="opacity_control_description">Control flashcard transparency. Minimum 10%% ensures visibility.</string>
     
     <!-- Search Functionality -->
     <string name="search_categories">Search categories...</string>

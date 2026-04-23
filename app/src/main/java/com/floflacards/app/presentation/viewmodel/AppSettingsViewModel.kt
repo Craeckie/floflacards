@@ -65,6 +65,13 @@ class AppSettingsViewModel @Inject constructor(
     fun setTargetRetention(value: Double) {
         settingsManager.setTargetRetention(value)
     }
+
+    /** Flashcard overlay opacity (0.1f..1.0f, 10% floor keeps the card visible). */
+    val flashcardOpacity: StateFlow<Float> = settingsManager.flashcardOpacity
+
+    fun setFlashcardOpacity(value: Float) {
+        settingsManager.setFlashcardOpacity(value)
+    }
     
     /**
      * Updates the app theme preference
