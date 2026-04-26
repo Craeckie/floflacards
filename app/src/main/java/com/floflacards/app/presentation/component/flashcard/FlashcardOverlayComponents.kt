@@ -18,7 +18,10 @@
 package com.floflacards.app.presentation.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
+import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -39,6 +42,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.unit.dp
 import com.floflacards.app.data.entity.FlashcardEntity
 import com.floflacards.app.data.entity.CategoryEntity
@@ -60,6 +64,7 @@ fun FlashcardContainer(
     onPositionChange: (Int, Int) -> Unit,
     onSizeChange: (Int, Int) -> Unit,
     onRating: (FlashcardRating) -> Unit,
+    onSnooze: () -> Unit = { },
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -84,6 +89,7 @@ fun FlashcardContainer(
                     category = category,
                     theme = theme,
                     onPositionChange = onPositionChange,
+                    onSnooze = onSnooze,
                     onClose = onClose
                 )
 
@@ -106,7 +112,12 @@ fun FlashcardContainer(
                     if (showAnswer) {
                         FlashcardControls(
                             onRating = onRating,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(
+                                start = 18.dp,
+                                end = 18.dp,
+                                top = 6.dp,
+                                bottom = 18.dp
+                            )
                         )
                     }
                 }
@@ -162,8 +173,9 @@ internal fun contentBorder(color: Color): Modifier = Modifier.drawBehind {
 
 /**
  * Resize affordance in the bottom-right corner. Two diagonal strokes in the
- * theme text color at low alpha — subtle but discoverable. The whole box
- * captures drag gestures.
+ * theme text color at low alpha — subtle but discoverable. Only the bottom-right
+ * triangular half of the box catches gestures; the top-left half falls through
+ * to the Easy button underneath so the button stays tappable despite the overlap.
  */
 @Composable
 internal fun ResizeCornerGrip(
@@ -176,8 +188,24 @@ internal fun ResizeCornerGrip(
         modifier = modifier
             .size(40.dp)
             .pointerInput(Unit) {
-                detectDragGestures { _, dragAmount ->
-                    onSizeChange(dragAmount.x.toInt(), dragAmount.y.toInt())
+                awaitEachGesture {
+                    val down = awaitFirstDown(requireUnconsumed = false)
+                    val w = size.width.toFloat()
+                    val h = size.height.toFloat()
+                    // Accept only touches below the anti-diagonal (bottom-right
+                    // triangle, matching the visible grip). Taps in the top-left
+                    // half pass through to the Easy button.
+                    if (down.position.x / w + down.position.y / h < 1f) {
+                        return@awaitEachGesture
+                    }
+                    val dragStart = awaitTouchSlopOrCancellation(down.id) { change, _ ->
+                        change.consume()
+                    } ?: return@awaitEachGesture
+                    drag(dragStart.id) { change ->
+                        val delta = change.positionChange()
+                        onSizeChange(delta.x.toInt(), delta.y.toInt())
+                        change.consume()
+                    }
                 }
             }
     ) {

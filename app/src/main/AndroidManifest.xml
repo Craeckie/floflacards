@@ -68,6 +68,11 @@
             
 
             
+        <!-- Snooze alarm receiver — resumes learning after snooze duration -->
+        <receiver
+            android:name=".service.SnoozeBroadcastReceiver"
+            android:exported="false" />
+
         <!-- Timer Foreground Service -->
         <service
             android:name=".service.TimerForegroundService"

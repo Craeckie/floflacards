@@ -425,6 +425,11 @@
     <string name="category_export_csv">Export as CSV</string>
     <string name="category_import_csv">Import from CSV</string>
 
+    <!-- Snooze feature -->
+    <string name="settings_snooze_duration_title">Snooze Duration</string>
+    <string name="settings_snooze_duration_description">How long to pause popups when you tap the snooze button on an overlay card</string>
+    <string name="overlay_snooze_content_description">Snooze</string>
+
     <!-- Rating button labels -->
     <string name="rating_again">Again</string>
     <string name="rating_hard">Hard</string>

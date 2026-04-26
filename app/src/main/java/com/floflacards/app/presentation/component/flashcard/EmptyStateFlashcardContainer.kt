@@ -53,6 +53,7 @@ fun EmptyStateFlashcardContainer(
     onPositionChange: (Int, Int) -> Unit,
     onSizeChange: (Int, Int) -> Unit,
     onManageCards: () -> Unit,
+    onSnooze: () -> Unit = { },
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -77,6 +78,7 @@ fun EmptyStateFlashcardContainer(
                     category = null,
                     theme = theme,
                     onPositionChange = onPositionChange,
+                    onSnooze = onSnooze,
                     onClose = onClose
                 )
 

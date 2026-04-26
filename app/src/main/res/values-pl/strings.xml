@@ -359,6 +359,11 @@
     <string name="search_no_results_description">Spróbuj innego wyszukiwania lub wyczyść wyszukiwanie, aby zobaczyć wszystkie elementy</string>
     <string name="search_clear">Wyczyść wyszukiwanie</string>
 
+    <!-- Snooze feature - Polish -->
+    <string name="settings_snooze_duration_title">Czas drzemki</string>
+    <string name="settings_snooze_duration_description">Jak długo wstrzymać wyskakujące fiszki po naciśnięciu przycisku drzemki</string>
+    <string name="overlay_snooze_content_description">Drzemka</string>
+
     <!-- Rating button labels - Polish -->
     <string name="rating_again">Jeszcze raz</string>
     <string name="rating_hard">Trudne</string>

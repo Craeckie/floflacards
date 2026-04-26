@@ -72,6 +72,13 @@ class AppSettingsViewModel @Inject constructor(
     fun setFlashcardOpacity(value: Float) {
         settingsManager.setFlashcardOpacity(value)
     }
+
+    /** Snooze duration in minutes (discrete: 5, 10, 30, 60, 120, 360, 1440). */
+    val snoozeDurationMinutes: StateFlow<Int> = settingsManager.snoozeDurationMinutes
+
+    fun setSnoozeDurationMinutes(minutes: Int) {
+        settingsManager.setSnoozeDurationMinutes(minutes)
+    }
     
     /**
      * Updates the app theme preference

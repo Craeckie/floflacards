@@ -50,7 +50,8 @@ class OverlayComponents(
         onSizeChange: (Int, Int) -> Unit,
         onRating: (FlashcardRating) -> Unit,
         onClose: () -> Unit,
-        onManageCards: () -> Unit = { }
+        onManageCards: () -> Unit = { },
+        onSnooze: () -> Unit = { }
     ) {
         var category by remember { mutableStateOf<CategoryEntity?>(null) }
         var currentUiState by remember { mutableStateOf(flashcardUiPreferences.getFlashcardUiState()) }
@@ -87,6 +88,7 @@ class OverlayComponents(
                 onPositionChange = handlePositionChange,
                 onSizeChange = handleSizeChange,
                 onManageCards = onManageCards,
+                onSnooze = onSnooze,
                 onClose = onClose
             )
         } else {
@@ -98,6 +100,7 @@ class OverlayComponents(
                 onPositionChange = handlePositionChange,
                 onSizeChange = handleSizeChange,
                 onRating = onRating,
+                onSnooze = onSnooze,
                 onClose = onClose
             )
         }

@@ -17,6 +17,8 @@
 
 package com.floflacards.app.service
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -56,6 +58,7 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
     
     companion object {
         private const val TAG = "OverlayService"
+        private const val SNOOZE_ALARM_REQUEST_CODE = 2001
         private const val EXTRA_FLASHCARD_ID = "flashcard_id"
         private const val EXTRA_FLASHCARD_QUESTION = "flashcard_question"
         private const val EXTRA_FLASHCARD_ANSWER = "flashcard_answer"
@@ -270,7 +273,8 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
                 },
                 onRating = { rating -> handleFlashcardRating(flashcard, rating) },
                 onClose = { handleFlashcardClose(flashcard) },
-                onManageCards = { handleManageCardsNavigation() }
+                onManageCards = { handleManageCardsNavigation() },
+                onSnooze = { handleSnooze() }
             )
         }
         
@@ -392,6 +396,58 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
         }
     }
     
+    /**
+     * Handles snooze button tap: stops the timer, schedules an alarm to resume,
+     * and closes the overlay. Order matters — stopLearningService() clears
+     * pausedUntil, so we re-set it afterwards.
+     */
+    private fun handleSnooze() {
+        Log.d(TAG, "Handling snooze")
+        val snoozeDurationMs = settingsManager.getSnoozeDurationMinutes() * 60 * 1000L
+
+        // 1. Stop the learning service (this clears pausedUntil)
+        learningServiceManager.stopLearningService()
+        // 2. Re-set pausedUntil after stop cleared it
+        settingsManager.setPausedUntil(System.currentTimeMillis() + snoozeDurationMs)
+        // 3. Schedule the alarm to resume
+        scheduleSnoozeResume(snoozeDurationMs)
+        // 4. Close the overlay
+        closeOverlay()
+    }
+
+    /**
+     * Schedules an exact alarm that fires [SnoozeBroadcastReceiver] after
+     * [durationMs] milliseconds. Uses setExactAndAllowWhileIdle on API 23+.
+     */
+    private fun scheduleSnoozeResume(durationMs: Long) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
+        val intent = Intent(this, SnoozeBroadcastReceiver::class.java).apply {
+            action = SnoozeBroadcastReceiver.ACTION_RESUME_AFTER_SNOOZE
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            SNOOZE_ALARM_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val triggerAtMillis = System.currentTimeMillis() + durationMs
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExact(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMillis,
+                pendingIntent
+            )
+        }
+        Log.d(TAG, "Snooze alarm scheduled for ${durationMs / 1000}s from now")
+    }
+
     private fun closeOverlay() {
         Log.d(TAG, "Closing overlay")
         

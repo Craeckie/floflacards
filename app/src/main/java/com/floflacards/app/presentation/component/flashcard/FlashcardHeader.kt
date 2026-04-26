@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -33,6 +34,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.floflacards.app.R
 import com.floflacards.app.data.entity.CategoryEntity
 import com.floflacards.app.data.model.FlashcardTheme
 
@@ -45,6 +48,7 @@ fun FlashcardHeader(
     category: CategoryEntity?,
     theme: FlashcardTheme = FlashcardTheme.DEFAULT_THEME,
     onPositionChange: (Int, Int) -> Unit,
+    onSnooze: () -> Unit = { },
     onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -76,6 +80,17 @@ fun FlashcardHeader(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
                 letterSpacing = 0.1.sp
+            )
+        }
+
+        IconButton(
+            onClick = onSnooze,
+            modifier = Modifier.size(36.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.Snooze,
+                contentDescription = stringResource(R.string.overlay_snooze_content_description),
+                tint = FlashcardColors.getTextColor(theme)
             )
         }
 

@@ -17,12 +17,14 @@
 
 package com.floflacards.app.presentation.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -141,31 +143,33 @@ fun IntervalSelectionDialog(
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
+                isNowSelected = true
+                isCustomSelected = false
+                hasError = false
+            }
         ) {
             RadioButton(
                 selected = isNowSelected,
-                onClick = {
-                    isNowSelected = true
-                    isCustomSelected = false
-                    hasError = false
-                }
+                onClick = null
             )
             Text(stringResource(R.string.interval_now_once))
         }
 
         availableIntervals.forEach { interval ->
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
+                    isNowSelected = false
+                    selectedInterval = interval
+                    isCustomSelected = false
+                    hasError = false
+                }
             ) {
                 RadioButton(
                     selected = !isNowSelected && selectedInterval == interval && !isCustomSelected,
-                    onClick = {
-                        isNowSelected = false
-                        selectedInterval = interval
-                        isCustomSelected = false
-                        hasError = false
-                    }
+                    onClick = null
                 )
                 Text(stringResource(R.string.interval_minutes, interval))
             }
@@ -173,15 +177,16 @@ fun IntervalSelectionDialog(
 
         // Custom interval option
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
+                isNowSelected = false
+                isCustomSelected = true
+                hasError = false
+            }
         ) {
             RadioButton(
                 selected = isCustomSelected,
-                onClick = {
-                    isNowSelected = false
-                    isCustomSelected = true
-                    hasError = false
-                }
+                onClick = null
             )
             Text(stringResource(R.string.interval_custom))
         }

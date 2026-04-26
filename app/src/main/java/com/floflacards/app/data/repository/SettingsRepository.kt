@@ -76,6 +76,10 @@ class SettingsRepository @Inject constructor(
     private val _flashcardOpacity = MutableStateFlow(flashcardUiPreferences.getCurrentOpacity())
     val flashcardOpacity: StateFlow<Float> = _flashcardOpacity.asStateFlow()
 
+    // Snooze duration in minutes — observed by the settings slider
+    private val _snoozeDurationMinutes = MutableStateFlow(getSnoozeDurationMinutes())
+    val snoozeDurationMinutes: StateFlow<Int> = _snoozeDurationMinutes.asStateFlow()
+
     companion object {
         private const val KEY_INTERVAL_MINUTES = "interval_minutes"
         private const val KEY_IS_LEARNING_ACTIVE = "is_learning_active"
@@ -88,6 +92,9 @@ class SettingsRepository @Inject constructor(
         private const val KEY_APP_LOCALE = "app_locale"
         private const val KEY_TARGET_RETENTION = "target_retention"
         private const val KEY_BLOCKLIST = "blocklist_packages"
+        private const val KEY_SNOOZE_DURATION_MINUTES = "snooze_duration_minutes"
+        private const val KEY_PAUSED_UNTIL = "paused_until"
+        private const val DEFAULT_SNOOZE_DURATION_MINUTES = 30
         private const val DEFAULT_TARGET_RETENTION = 0.9f
         private const val MIN_TARGET_RETENTION = 0.80f
         private const val MAX_TARGET_RETENTION = 0.95f
@@ -302,5 +309,26 @@ class SettingsRepository @Inject constructor(
     fun setFlashcardOpacity(opacity: Float) {
         flashcardUiPreferences.saveOpacity(opacity)
         _flashcardOpacity.value = flashcardUiPreferences.getCurrentOpacity()
+    }
+
+    fun getSnoozeDurationMinutes(): Int {
+        return prefs.getInt(KEY_SNOOZE_DURATION_MINUTES, DEFAULT_SNOOZE_DURATION_MINUTES)
+    }
+
+    fun setSnoozeDurationMinutes(minutes: Int) {
+        prefs.edit()
+            .putInt(KEY_SNOOZE_DURATION_MINUTES, minutes)
+            .apply()
+        _snoozeDurationMinutes.value = minutes
+    }
+
+    fun getPausedUntil(): Long {
+        return prefs.getLong(KEY_PAUSED_UNTIL, 0L)
+    }
+
+    fun setPausedUntil(epochMs: Long) {
+        prefs.edit()
+            .putLong(KEY_PAUSED_UNTIL, epochMs)
+            .apply()
     }
 }

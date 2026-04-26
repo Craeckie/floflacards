@@ -39,6 +39,7 @@ import android.content.Intent
 import android.net.Uri
 import android.content.Context
 import android.content.pm.PackageManager
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import com.floflacards.app.data.model.AppTheme
 import com.floflacards.app.data.model.FlashcardTheme
@@ -73,6 +74,7 @@ fun AppSettingsScreen(
     val currentLanguage: Language by viewModel.appLocale.collectAsState()
     val currentTargetRetention by viewModel.targetRetention.collectAsState()
     val currentFlashcardOpacity by viewModel.flashcardOpacity.collectAsState()
+    val currentSnoozeDuration by viewModel.snoozeDurationMinutes.collectAsState()
     
     Scaffold(
         topBar = {
@@ -206,12 +208,19 @@ fun AppSettingsScreen(
                 }
             }
 
-            // Overlay behavior section — currently exposes the app blocklist
+            // Overlay behavior section — snooze duration + app blocklist
             item {
                 AppSettingsSection(
                     title = stringResource(R.string.settings_overlay_behavior_title),
                     subtitle = stringResource(R.string.settings_overlay_behavior_subtitle)
                 ) {
+                    SnoozeDurationSettingItem(
+                        durationMinutes = currentSnoozeDuration,
+                        onDurationChange = { viewModel.setSnoozeDurationMinutes(it) }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     SupportSettingItem(
                         title = stringResource(R.string.settings_blocklist_title),
                         subtitle = stringResource(R.string.settings_blocklist_subtitle),
@@ -860,6 +869,57 @@ private fun FlashcardOpacitySettingItem(
             valueRange = 0.1f..1.0f,
             // 18 positions inclusive ⇒ 16 intermediate stops.
             steps = 16
+        )
+    }
+}
+
+/**
+ * 7-step discrete slider for the overlay snooze duration.
+ * Options: 5 min, 10 min, 30 min, 1 h, 2 h, 6 h, 24 h.
+ * Stored as minutes in SharedPreferences.
+ */
+@Composable
+private fun SnoozeDurationSettingItem(
+    durationMinutes: Int,
+    onDurationChange: (Int) -> Unit
+) {
+    val snoozeOptions = listOf(5, 10, 30, 60, 120, 360, 1440)
+    val currentIndex = snoozeOptions.indexOf(durationMinutes).coerceAtLeast(0)
+
+    fun formatDuration(minutes: Int): String = if (minutes < 60) "$minutes min" else "${minutes / 60} h"
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.settings_snooze_duration_title),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = formatDuration(snoozeOptions[currentIndex]),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        Text(
+            text = stringResource(R.string.settings_snooze_duration_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        Slider(
+            value = currentIndex.toFloat(),
+            onValueChange = { sliderValue ->
+                val index = sliderValue.roundToInt().coerceIn(0, snoozeOptions.lastIndex)
+                onDurationChange(snoozeOptions[index])
+            },
+            valueRange = 0f..6f,
+            steps = 5 // 5 intermediate stops → 7 total positions
         )
     }
 }

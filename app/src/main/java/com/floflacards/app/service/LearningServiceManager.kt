@@ -43,12 +43,14 @@ class LearningServiceManager @Inject constructor(
     }
     
     fun startLearningService(intervalMinutes: Int) {
+        settingsManager.setPausedUntil(0L)
         serviceCommunicationManager.updateServiceStatus(true)
         settingsManager.setLearningActive(true)
         TimerForegroundService.start(context, intervalMinutes)
     }
     
     fun stopLearningService() {
+        settingsManager.setPausedUntil(0L)
         serviceCommunicationManager.updateServiceStatus(false)
         serviceCommunicationManager.resetCountdown()
         settingsManager.setLearningActive(false)
