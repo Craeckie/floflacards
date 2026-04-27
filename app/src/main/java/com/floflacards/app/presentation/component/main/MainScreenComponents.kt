@@ -19,17 +19,13 @@ package com.floflacards.app.presentation.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -95,51 +91,40 @@ fun ModernHeaderSection(
 }
 
 /**
- * Status dashboard showing learning service state and statistics.
- * Displays key metrics in a clean, organized layout.
+ * Status dashboard: a stats row of Streak + Mastered on top, with the service
+ * status pill below it. The pill carries the next-flashcard / snooze countdown
+ * inline, so the previous standalone countdown cards are no longer needed.
  */
 @Composable
 fun StatusDashboard(
     isServiceActive: Boolean,
-    activeFlashcardCount: Int,
+    masteredCards: Int,
+    totalCards: Int,
     nextFlashcardCountdown: Long,
     streak: Int = 0,
     isSnoozing: Boolean = false,
     snoozeRemainingSeconds: Long = 0L,
+    onMasteredClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column {
-            ModernLearningStatusGrid(
-                isServiceActive = isServiceActive,
-                activeFlashcardCount = activeFlashcardCount,
-                streak = streak,
-                modifier = modifier,
-                isSnoozing = isSnoozing
-            )
-
-            when {
-                isSnoozing -> SnoozeCountdownCard(
-                    remainingSeconds = snoozeRemainingSeconds,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-                isServiceActive -> NextFlashcardCountdownCard(
-                    countdownSeconds = nextFlashcardCountdown,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-            }
-        }
+        ModernStatsRow(
+            streak = streak,
+            masteredCards = masteredCards,
+            totalCards = totalCards,
+            onMasteredClick = onMasteredClick,
+            modifier = Modifier.fillMaxWidth()
+        )
+        ServiceStatusPill(
+            isServiceActive = isServiceActive,
+            isSnoozing = isSnoozing,
+            nextFlashcardCountdown = nextFlashcardCountdown,
+            snoozeRemainingSeconds = snoozeRemainingSeconds,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 
@@ -284,14 +269,15 @@ fun ResponsiveActionCard(
                 modifier = Modifier.fillMaxWidth()
             )
             
-            // Subtitle - adaptive and optional for very compact screens
-            if (!isCompact) {
+            // Subtitle: shown whenever non-empty so dynamic info (e.g. card counts)
+            // stays visible at every breakpoint. Decorative empty subtitles collapse.
+            if (subtitle.isNotEmpty()) {
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (isPrimary) 
-                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) 
-                    else 
+                    color = if (isPrimary)
+                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
+                    else
                         MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth(),
@@ -375,86 +361,3 @@ fun ResponsiveSettingsCard(
     }
 }
 
-/**
- * Next flashcard countdown card showing time until next flashcard.
- * Provides clear visual feedback about learning session progress.
- */
-@Composable
-fun NextFlashcardCountdownCard(
-    countdownSeconds: Long,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        ),
-        shape = RoundedCornerShape(8.dp),
-        modifier = modifier
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "⏰",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = if (countdownSeconds > 0) {
-                    stringResource(R.string.main_next_flashcard_in, countdownSeconds)
-                } else {
-                    stringResource(R.string.main_preparing_next)
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-        }
-    }
-}
-
-/**
- * Snooze countdown card showing remaining snooze time. Uses the same Snooze
- * icon as the overlay popup so the relationship is visually obvious.
- */
-@Composable
-fun SnoozeCountdownCard(
-    remainingSeconds: Long,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        ),
-        shape = RoundedCornerShape(8.dp),
-        modifier = modifier
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Default.Snooze,
-                contentDescription = stringResource(R.string.overlay_snooze_content_description),
-                tint = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.main_snooze_remaining, formatSnoozeRemaining(remainingSeconds)),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
-        }
-    }
-}
-
-private fun formatSnoozeRemaining(seconds: Long): String {
-    val totalSeconds = seconds.coerceAtLeast(0L)
-    val minutes = totalSeconds / 60L
-    val secs = totalSeconds % 60L
-    return String.format("%d:%02d", minutes, secs)
-}

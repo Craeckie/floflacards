@@ -169,6 +169,7 @@
     <string name="home_header_subtitle">Knowledge flows passively with overlay cards</string>
     <string name="home_cards_title">Cards</string>
     <string name="home_cards_subtitle"></string>
+    <string name="home_cards_count_active">%1$d active</string>
     <string name="home_cards_description">Navigate to flashcard management screen</string>
     <string name="home_statistics_title">Statistics</string>
     <string name="home_statistics_subtitle"></string>
@@ -179,7 +180,6 @@
     <!-- Status Dashboard -->
     <string name="status_learning_active">Learning Active</string>
     <string name="status_learning_inactive">Learning Inactive</string>
-    <string name="status_active_cards">Active Cards</string>
     <string name="status_streak_days">Day Streak</string>
     <string name="status_next_flashcard">Next flashcard in</string>
     
@@ -319,11 +319,6 @@
     <string name="learning_start_button_caps">START LEARNING</string>
     <string name="learning_overlay_permission_warning">Overlay permission required for floating flashcards!</string>
     
-    <!-- Status Dashboard Additional Strings -->
-    <string name="status_learning_title">Learning Status</string>
-    <string name="status_service_label">Service</string>
-    <string name="status_cards_suffix_text">cards</string>
-    <string name="status_days_text">days</string>
     
     <!-- Shared Component Strings -->
     <string name="shared_back">Back</string>
@@ -358,10 +353,10 @@
     <string name="settings_edit_category">Edit Category</string>
     <string name="settings_preferences">Preferences</string>
     
-    <!-- Main Screen Next Flashcard -->
-    <string name="main_next_flashcard_in">Next flashcard in %1$ds</string>
-    <string name="main_preparing_next">Preparing next flashcard...</string>
-    <string name="main_snooze_remaining">Snoozed — resumes in %1$s</string>
+    <!-- Main Screen Status Pill -->
+    <string name="status_pill_next_in">Next in %1$s</string>
+    <string name="status_pill_resumes_in">Resumes in %1$s</string>
+    <string name="status_pill_preparing">Preparing…</string>
     
     <!-- Demo Flashcard Content -->
     <string name="demo_welcome_question">👋 Welcome to your first flashcard!\n\nThis is how flashcards work. Tap the \'Show Answer\' button below to reveal the answer and rating options.</string>

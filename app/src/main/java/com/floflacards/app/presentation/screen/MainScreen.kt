@@ -152,11 +152,13 @@ fun MainScreen(
             // Status Dashboard
             StatusDashboard(
                 isServiceActive = uiState.isServiceActive,
-                activeFlashcardCount = uiState.activeFlashcardCount,
+                masteredCards = uiState.statistics?.masteredCards ?: 0,
+                totalCards = uiState.statistics?.totalCards ?: uiState.activeFlashcardCount,
                 nextFlashcardCountdown = uiState.nextFlashcardCountdown,
                 streak = uiState.statistics?.streakDays ?: 0,
                 isSnoozing = uiState.isSnoozing,
                 snoozeRemainingSeconds = uiState.snoozeRemainingSeconds,
+                onMasteredClick = onNavigateToStatistics,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -186,7 +188,10 @@ fun MainScreen(
                     ) {
                         ResponsiveActionCard(
                             title = stringResource(R.string.home_cards_title),
-                            subtitle = stringResource(R.string.home_cards_subtitle),
+                            subtitle = stringResource(
+                                R.string.home_cards_count_active,
+                                uiState.activeFlashcardCount
+                            ),
                             icon = "💼",
                             onClick = onNavigateToSettings,
                             isPrimary = true,
@@ -195,7 +200,7 @@ fun MainScreen(
                             isCompact = isCompactScreen,
                             modifier = Modifier.weight(1f)
                         )
-                        
+
                         ResponsiveActionCard(
                             title = stringResource(R.string.home_statistics_title),
                             subtitle = stringResource(R.string.home_statistics_subtitle),
@@ -225,7 +230,10 @@ fun MainScreen(
                 ) {
                     ResponsiveActionCard(
                         title = stringResource(R.string.home_cards_title),
-                        subtitle = stringResource(R.string.home_cards_subtitle),
+                        subtitle = stringResource(
+                            R.string.home_cards_count_active,
+                            uiState.activeFlashcardCount
+                        ),
                         icon = "💼",
                         onClick = onNavigateToSettings,
                         isPrimary = true,

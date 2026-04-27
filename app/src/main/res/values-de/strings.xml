@@ -159,6 +159,7 @@
     <string name="home_header_subtitle">Wissen fließt nebenbei mit schwebenden Karten</string>
     <string name="home_cards_title">Karten</string>
     <string name="home_cards_subtitle"></string>
+    <string name="home_cards_count_active">%1$d aktiv</string>
     <string name="home_cards_description">Zur Lernkarten-Verwaltung wechseln</string>
     <string name="home_statistics_title">Statistiken</string>
     <string name="home_statistics_subtitle"></string>
@@ -169,7 +170,6 @@
     <!-- Status Dashboard - clear and informative German -->
     <string name="status_learning_active">Lernen aktiv</string>
     <string name="status_learning_inactive">Lernen pausiert</string>
-    <string name="status_active_cards">Aktive Karten</string>
     <string name="status_streak_days">Tage-Serie</string>
     <string name="status_next_flashcard">Nächste Lernkarte in</string>
     
@@ -298,12 +298,6 @@
     <string name="learning_start_button_caps">LERNEN STARTEN</string>
     <string name="learning_overlay_permission_warning">Overlay-Berechtigung für schwebende Lernkarten erforderlich!</string>
     
-    <!-- Status Dashboard Additional Strings - clear German -->
-    <string name="status_learning_title">Lern-Status</string>
-    <string name="status_service_label">Dienst</string>
-    <string name="status_cards_suffix_text">Karten</string>
-    <string name="status_days_text">Tage</string>
-    
     <!-- Shared Component Strings - natural German -->
     <string name="shared_back">Zurück</string>
     <string name="shared_cancel">Abbrechen</string>
@@ -337,10 +331,10 @@
     <string name="settings_edit_category">Kategorie bearbeiten</string>
     <string name="settings_preferences">Einstellungen</string>
     
-    <!-- Main Screen Next Flashcard - German -->
-    <string name="main_next_flashcard_in">Nächste Lernkarte in %1$d s</string>
-    <string name="main_preparing_next">Bereite nächste Lernkarte vor...</string>
-    <string name="main_snooze_remaining">Pausiert — Fortsetzung in %1$s</string>
+    <!-- Main Screen Status Pill - German -->
+    <string name="status_pill_next_in">Nächste in %1$s</string>
+    <string name="status_pill_resumes_in">Fortsetzung in %1$s</string>
+    <string name="status_pill_preparing">Bereit gleich…</string>
     
     <!-- Demo Flashcard Content - German -->
     <string name="demo_welcome_question">👋 Willkommen zu deiner ersten Lernkarte!\n\nSo funktionieren Lernkarten. Tippe auf den \'Antwort zeigen\'-Button unten, um die Antwort und Bewertungsoptionen zu sehen.</string>

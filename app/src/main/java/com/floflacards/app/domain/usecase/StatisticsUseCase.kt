@@ -24,6 +24,7 @@ import javax.inject.Singleton
 data class SimpleStatistics(
     val totalCards: Int,
     val studiedCards: Int,
+    val masteredCards: Int,
     val accuracyRate: Float,
     val streakDays: Int
 ) {
@@ -60,6 +61,8 @@ class StatisticsUseCase @Inject constructor(
             
             val totalCards = enabledFlashcards.size
             val studiedCards = enabledFlashcards.count { it.reps > 0 }
+            // Mastered heuristic mirrors StatisticsViewModel: stable for ~3 weeks after 3+ reviews.
+            val masteredCards = enabledFlashcards.count { it.stability >= 21.0 && it.reps >= 3 }
             
             // Treat Good + Easy as correct; Hard counts as half-credit; Wrong is zero.
             // Same weighting as the per-card success rate in StatisticsViewModel.
@@ -79,6 +82,7 @@ class StatisticsUseCase @Inject constructor(
             val stats = SimpleStatistics(
                 totalCards = totalCards,
                 studiedCards = studiedCards,
+                masteredCards = masteredCards,
                 accuracyRate = accuracyRate,
                 streakDays = streakDays
             )

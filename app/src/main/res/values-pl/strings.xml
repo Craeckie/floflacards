@@ -159,6 +159,7 @@
     <string name="home_header_subtitle">Wiedza płynie naturalnie z unoszącymi się kartami</string>
     <string name="home_cards_title">Karty</string>
     <string name="home_cards_subtitle"></string>
+    <string name="home_cards_count_active">%1$d aktywnych</string>
     <string name="home_cards_description">Przejdź do zarządzania fiszkami</string>
     <string name="home_statistics_title">Statystyki</string>
     <string name="home_statistics_subtitle"></string>
@@ -169,7 +170,6 @@
     <!-- Status Dashboard - clear and informative Polish -->
     <string name="status_learning_active">Nauka aktywna</string>
     <string name="status_learning_inactive">Nauka wstrzymana</string>
-    <string name="status_active_cards">Aktywne karty</string>
     <string name="status_streak_days">Seria dni</string>
     <string name="status_next_flashcard">Następna fiszka za</string>
     
@@ -298,12 +298,6 @@
     <string name="learning_start_button_caps">ROZPOCZNIJ NAUKĘ</string>
     <string name="learning_overlay_permission_warning">Uprawnienie nakładki wymagane dla unoszących się fiszek!</string>
     
-    <!-- Status Dashboard Additional Strings - clear Polish -->
-    <string name="status_learning_title">Status nauki</string>
-    <string name="status_service_label">Usługa</string>
-    <string name="status_cards_suffix_text">kart</string>
-    <string name="status_days_text">dni</string>
-    
     <!-- Shared Component Strings - natural Polish -->
     <string name="shared_back">Wróć</string>
     <string name="shared_cancel">Anuluj</string>
@@ -337,10 +331,10 @@
     <string name="settings_edit_category">Edytuj kategorię</string>
     <string name="settings_preferences">Preferencje</string>
     
-    <!-- Main Screen Next Flashcard - Polish -->
-    <string name="main_next_flashcard_in">Następna fiszka za %1$d s</string>
-    <string name="main_preparing_next">Przygotowuję następną fiszkę...</string>
-    <string name="main_snooze_remaining">Drzemka — wznowienie za %1$s</string>
+    <!-- Main Screen Status Pill - Polish -->
+    <string name="status_pill_next_in">Następna za %1$s</string>
+    <string name="status_pill_resumes_in">Wznowienie za %1$s</string>
+    <string name="status_pill_preparing">Przygotowuję…</string>
     
     <!-- Demo Flashcard Content - Polish -->
     <string name="demo_welcome_question">👋 Witaj przy swojej pierwszej fiszce!\n\nTak działają fiszki. Dotknij przycisk \'Pokaż odpowiedź\' poniżej, żeby zobaczyć odpowiedź i opcje oceny.</string>
