@@ -155,15 +155,18 @@ fun MainScreen(
                 activeFlashcardCount = uiState.activeFlashcardCount,
                 nextFlashcardCountdown = uiState.nextFlashcardCountdown,
                 streak = uiState.statistics?.streakDays ?: 0,
+                isSnoozing = uiState.isSnoozing,
+                snoozeRemainingSeconds = uiState.snoozeRemainingSeconds,
                 modifier = Modifier.fillMaxWidth()
             )
-            
+
             // Learning Controls with unified button (replaces old button + hint card)
             LearningControls(
                 isServiceActive = uiState.isServiceActive,
                 nextFlashcardCountdown = uiState.nextFlashcardCountdown,
                 activeFlashcardCount = uiState.activeFlashcardCount,
                 hasOverlayPermission = permissionState.hasOverlayPermission,
+                isSnoozing = uiState.isSnoozing,
                 onStartLearning = { showIntervalSelectionDialog = true },
                 onStopLearning = { viewModel.toggleLearningService() },
                 onRequestPermission = { permissionState.setShowOverlayPermissionDialog(true) },

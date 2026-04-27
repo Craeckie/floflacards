@@ -289,6 +289,7 @@
     <!-- Status Badge - concise Polish status terms -->
     <string name="status_active">AKTYWNA</string>
     <string name="status_inactive">NIEAKTYWNA</string>
+    <string name="status_snoozed">DRZEMKA</string>
     
     <!-- Learning Controls Additional Strings - action-oriented Polish -->
     <string name="learning_stop_button_caps">ZATRZYMAJ NAUKĘ</string>
@@ -339,6 +340,7 @@
     <!-- Main Screen Next Flashcard - Polish -->
     <string name="main_next_flashcard_in">Następna fiszka za %1$d s</string>
     <string name="main_preparing_next">Przygotowuję następną fiszkę...</string>
+    <string name="main_snooze_remaining">Drzemka — wznowienie za %1$s</string>
     
     <!-- Demo Flashcard Content - Polish -->
     <string name="demo_welcome_question">👋 Witaj przy swojej pierwszej fiszce!\n\nTak działają fiszki. Dotknij przycisk \'Pokaż odpowiedź\' poniżej, żeby zobaczyć odpowiedź i opcje oceny.</string>

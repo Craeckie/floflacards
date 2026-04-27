@@ -289,6 +289,7 @@
     <!-- Status Badge - concise German status terms -->
     <string name="status_active">AKTIV</string>
     <string name="status_inactive">INAKTIV</string>
+    <string name="status_snoozed">PAUSIERT</string>
     
     <!-- Learning Controls Additional Strings - action-oriented German -->
     <string name="learning_stop_button_caps">LERNEN BEENDEN</string>
@@ -339,6 +340,7 @@
     <!-- Main Screen Next Flashcard - German -->
     <string name="main_next_flashcard_in">Nächste Lernkarte in %1$d s</string>
     <string name="main_preparing_next">Bereite nächste Lernkarte vor...</string>
+    <string name="main_snooze_remaining">Pausiert — Fortsetzung in %1$s</string>
     
     <!-- Demo Flashcard Content - German -->
     <string name="demo_welcome_question">👋 Willkommen zu deiner ersten Lernkarte!\n\nSo funktionieren Lernkarten. Tippe auf den \'Antwort zeigen\'-Button unten, um die Antwort und Bewertungsoptionen zu sehen.</string>

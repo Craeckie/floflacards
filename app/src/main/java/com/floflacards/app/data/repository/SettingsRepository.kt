@@ -80,6 +80,10 @@ class SettingsRepository @Inject constructor(
     private val _snoozeDurationMinutes = MutableStateFlow(getSnoozeDurationMinutes())
     val snoozeDurationMinutes: StateFlow<Int> = _snoozeDurationMinutes.asStateFlow()
 
+    // Epoch ms when the current snooze ends; 0 if not snoozing.
+    private val _pausedUntilMs = MutableStateFlow(getPausedUntil())
+    val pausedUntilMs: StateFlow<Long> = _pausedUntilMs.asStateFlow()
+
     companion object {
         private const val KEY_INTERVAL_MINUTES = "interval_minutes"
         private const val KEY_IS_LEARNING_ACTIVE = "is_learning_active"
@@ -330,5 +334,6 @@ class SettingsRepository @Inject constructor(
         prefs.edit()
             .putLong(KEY_PAUSED_UNTIL, epochMs)
             .apply()
+        _pausedUntilMs.value = epochMs
     }
 }

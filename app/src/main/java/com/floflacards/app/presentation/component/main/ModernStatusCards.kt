@@ -40,7 +40,8 @@ fun ModernLearningStatusGrid(
     isServiceActive: Boolean,
     activeFlashcardCount: Int,
     streak: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isSnoozing: Boolean = false
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
@@ -72,10 +73,14 @@ fun ModernLearningStatusGrid(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 ModernStatusCard(
-                    icon = "🔄",
+                    icon = if (isSnoozing) "💤" else "🔄",
                     label = stringResource(R.string.status_service_label),
-                    value = if (isServiceActive) stringResource(R.string.status_active) else stringResource(R.string.status_inactive),
-                    isPositive = isServiceActive,
+                    value = when {
+                        isSnoozing -> stringResource(R.string.status_snoozed)
+                        isServiceActive -> stringResource(R.string.status_active)
+                        else -> stringResource(R.string.status_inactive)
+                    },
+                    isPositive = isServiceActive || isSnoozing,
                     useAutoSizeText = true, // All status cards now use consistent auto-sizing
                     modifier = Modifier.weight(1f)
                 )

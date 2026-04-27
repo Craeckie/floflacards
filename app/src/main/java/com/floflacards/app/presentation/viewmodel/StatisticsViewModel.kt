@@ -46,11 +46,11 @@ data class FlashcardStats(
     val isMastered: Boolean
 ) {
     val lastSeenText: String = when {
-        lastSeenTimestamp == 0L -> "Not reviewed yet"
+        lastSeenTimestamp == 0L -> "⏰ Not scheduled yet"
         else -> {
             val date = java.util.Date(lastSeenTimestamp)
-            val formatter = java.text.SimpleDateFormat("MMM dd, HH:mm", java.util.Locale.getDefault())
-            formatter.format(date)
+            val formatter = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, java.util.Locale.getDefault())
+            "⏰ ${formatter.format(date)}"
         }
     }
 
@@ -168,7 +168,7 @@ class StatisticsViewModel @Inject constructor(
                                     easyCount = flashcard.easyCount,
                                     difficultyScore = flashcard.difficulty.toFloat(),
                                     successRate = weightedSuccessRate(flashcard) * 100f,
-                                    lastSeenTimestamp = flashcard.lastReviewedAt,
+                                    lastSeenTimestamp = flashcard.dueAt,
                                     reviewCount = flashcard.reps,
                                     isEnabled = flashcard.isEnabled,
                                     isMastered = isMastered

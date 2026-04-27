@@ -58,7 +58,6 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
     
     companion object {
         private const val TAG = "OverlayService"
-        private const val SNOOZE_ALARM_REQUEST_CODE = 2001
         private const val EXTRA_FLASHCARD_ID = "flashcard_id"
         private const val EXTRA_FLASHCARD_QUESTION = "flashcard_question"
         private const val EXTRA_FLASHCARD_ANSWER = "flashcard_answer"
@@ -426,7 +425,7 @@ class OverlayService : Service(), LifecycleOwner, ViewModelStoreOwner, SavedStat
         }
         val pendingIntent = PendingIntent.getBroadcast(
             this,
-            SNOOZE_ALARM_REQUEST_CODE,
+            SnoozeBroadcastReceiver.ALARM_REQUEST_CODE,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

@@ -31,9 +31,11 @@ import com.floflacards.app.util.PermissionHelper
 import com.floflacards.app.util.IntervalConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,7 +47,9 @@ data class MainUiState(
     val isLoading: Boolean = false,
     val statistics: SimpleStatistics? = null,
     val pendingInterval: Int? = null, // For storing interval when waiting for permission
-    val pendingShowNow: Boolean = false // Show a single flashcard once after permission is granted
+    val pendingShowNow: Boolean = false, // Show a single flashcard once after permission is granted
+    val isSnoozing: Boolean = false,
+    val snoozeRemainingSeconds: Long = 0L
 )
 
 @HiltViewModel
@@ -68,6 +72,7 @@ class MainViewModel @Inject constructor(
         loadActiveFlashcardCount()
         loadStatistics()
         observeSettings()
+        observeSnoozeState()
     }
     
     private fun initializeApp() {
@@ -106,6 +111,30 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    private fun observeSnoozeState() {
+        viewModelScope.launch {
+            settingsManager.pausedUntilMs.collectLatest { pausedUntil ->
+                if (pausedUntil <= 0L) {
+                    _uiState.value = _uiState.value.copy(
+                        isSnoozing = false,
+                        snoozeRemainingSeconds = 0L
+                    )
+                    return@collectLatest
+                }
+                while (true) {
+                    val remaining = ((pausedUntil - System.currentTimeMillis() + 999L) / 1000L)
+                        .coerceAtLeast(0L)
+                    _uiState.value = _uiState.value.copy(
+                        isSnoozing = remaining > 0L,
+                        snoozeRemainingSeconds = remaining
+                    )
+                    if (remaining <= 0L) break
+                    delay(1000L)
+                }
+            }
+        }
+    }
     
     /**
      * Toggles the learning service state.
@@ -113,10 +142,11 @@ class MainViewModel @Inject constructor(
      */
     fun toggleLearningService() {
         viewModelScope.launch {
-            if (_uiState.value.isServiceActive) {
+            val state = _uiState.value
+            if (state.isServiceActive || state.isSnoozing) {
                 stopLearningService()
             } else {
-                startLearningService(_uiState.value.selectedInterval)
+                startLearningService(state.selectedInterval)
             }
         }
     }

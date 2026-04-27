@@ -47,6 +47,7 @@ fun LearningControls(
     nextFlashcardCountdown: Long,
     activeFlashcardCount: Int,
     hasOverlayPermission: Boolean,
+    isSnoozing: Boolean,
     onStartLearning: () -> Unit,
     onStopLearning: () -> Unit,
     onRequestPermission: () -> Unit,
@@ -59,7 +60,7 @@ fun LearningControls(
     ) {
         // Unified Learning/Navigation Button (replaces old button + hint card)
         UnifiedLearningButton(
-            isServiceActive = isServiceActive,
+            isServiceActive = isServiceActive || isSnoozing,
             hasOverlayPermission = hasOverlayPermission,
             activeFlashcardCount = activeFlashcardCount,
             onStartLearning = onStartLearning,
@@ -67,11 +68,11 @@ fun LearningControls(
             onRequestPermission = onRequestPermission,
             onNavigateToCards = onNavigateToCards
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Only show permission warning for users who have cards but no overlay permission
-        if (activeFlashcardCount > 0 && !hasOverlayPermission && !isServiceActive) {
+        if (activeFlashcardCount > 0 && !hasOverlayPermission && !isServiceActive && !isSnoozing) {
             PermissionWarningCard()
         }
     }

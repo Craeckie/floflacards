@@ -39,6 +39,7 @@ class SnoozeBroadcastReceiver : BroadcastReceiver() {
     companion object {
         private const val TAG = "SnoozeBroadcastReceiver"
         const val ACTION_RESUME_AFTER_SNOOZE = "com.floflacards.action.RESUME_AFTER_SNOOZE"
+        const val ALARM_REQUEST_CODE = 2001
     }
 
     override fun onReceive(context: Context, intent: Intent) {

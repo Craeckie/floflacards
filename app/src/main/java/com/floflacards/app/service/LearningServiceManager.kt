@@ -17,7 +17,10 @@
 
 package com.floflacards.app.service
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import com.floflacards.app.service.TimerForegroundService
 import com.floflacards.app.data.repository.SettingsRepository
 import com.floflacards.app.domain.manager.ServiceStateManager
@@ -35,26 +38,42 @@ class LearningServiceManager @Inject constructor(
 ) {
     val isServiceActive: StateFlow<Boolean> = serviceCommunicationManager.isServiceActive
     val countdownTime: StateFlow<Long> = serviceCommunicationManager.countdownTime
-    
+
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    
+
     init {
         checkServiceState()
     }
-    
+
     fun startLearningService(intervalMinutes: Int) {
+        cancelSnoozeAlarm()
         settingsManager.setPausedUntil(0L)
         serviceCommunicationManager.updateServiceStatus(true)
         settingsManager.setLearningActive(true)
         TimerForegroundService.start(context, intervalMinutes)
     }
-    
+
     fun stopLearningService() {
+        cancelSnoozeAlarm()
         settingsManager.setPausedUntil(0L)
         serviceCommunicationManager.updateServiceStatus(false)
         serviceCommunicationManager.resetCountdown()
         settingsManager.setLearningActive(false)
         TimerForegroundService.stop(context)
+    }
+
+    private fun cancelSnoozeAlarm() {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
+        val intent = Intent(context, SnoozeBroadcastReceiver::class.java).apply {
+            action = SnoozeBroadcastReceiver.ACTION_RESUME_AFTER_SNOOZE
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            SnoozeBroadcastReceiver.ALARM_REQUEST_CODE,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        alarmManager.cancel(pendingIntent)
     }
     
 

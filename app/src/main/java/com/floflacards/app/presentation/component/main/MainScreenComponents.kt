@@ -19,8 +19,11 @@ package com.floflacards.app.presentation.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -101,6 +104,8 @@ fun StatusDashboard(
     activeFlashcardCount: Int,
     nextFlashcardCountdown: Long,
     streak: Int = 0,
+    isSnoozing: Boolean = false,
+    snoozeRemainingSeconds: Long = 0L,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -116,11 +121,18 @@ fun StatusDashboard(
                 isServiceActive = isServiceActive,
                 activeFlashcardCount = activeFlashcardCount,
                 streak = streak,
-                modifier = modifier
+                modifier = modifier,
+                isSnoozing = isSnoozing
             )
-            
-            if (isServiceActive) {
-                NextFlashcardCountdownCard(
+
+            when {
+                isSnoozing -> SnoozeCountdownCard(
+                    remainingSeconds = snoozeRemainingSeconds,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+                isServiceActive -> NextFlashcardCountdownCard(
                     countdownSeconds = nextFlashcardCountdown,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -401,4 +413,48 @@ fun NextFlashcardCountdownCard(
             )
         }
     }
+}
+
+/**
+ * Snooze countdown card showing remaining snooze time. Uses the same Snooze
+ * icon as the overlay popup so the relationship is visually obvious.
+ */
+@Composable
+fun SnoozeCountdownCard(
+    remainingSeconds: Long,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
+        ),
+        shape = RoundedCornerShape(8.dp),
+        modifier = modifier
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Snooze,
+                contentDescription = stringResource(R.string.overlay_snooze_content_description),
+                tint = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(R.string.main_snooze_remaining, formatSnoozeRemaining(remainingSeconds)),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+        }
+    }
+}
+
+private fun formatSnoozeRemaining(seconds: Long): String {
+    val totalSeconds = seconds.coerceAtLeast(0L)
+    val minutes = totalSeconds / 60L
+    val secs = totalSeconds % 60L
+    return String.format("%d:%02d", minutes, secs)
 }

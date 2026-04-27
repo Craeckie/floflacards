@@ -310,6 +310,7 @@
     <!-- Status Badge -->
     <string name="status_active">ACTIVE</string>
     <string name="status_inactive">INACTIVE</string>
+    <string name="status_snoozed">SNOOZED</string>
     
     <!-- Learning Controls Additional Strings -->
     <string name="learning_stop_button_caps">STOP LEARNING</string>
@@ -360,6 +361,7 @@
     <!-- Main Screen Next Flashcard -->
     <string name="main_next_flashcard_in">Next flashcard in %1$ds</string>
     <string name="main_preparing_next">Preparing next flashcard...</string>
+    <string name="main_snooze_remaining">Snoozed — resumes in %1$s</string>
     
     <!-- Demo Flashcard Content -->
     <string name="demo_welcome_question">👋 Welcome to your first flashcard!\n\nThis is how flashcards work. Tap the \'Show Answer\' button below to reveal the answer and rating options.</string>
