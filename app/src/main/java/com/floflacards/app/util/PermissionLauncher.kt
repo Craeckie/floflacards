@@ -17,6 +17,7 @@
 
 package com.floflacards.app.util
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -35,15 +36,28 @@ class PermissionLauncher(private val activity: ComponentActivity) {
     
     // Shared permission state that gets updated when user returns from settings
     var permissionUpdateCallback: (() -> Unit)? = null
-    
-    private val overlayPermissionLauncher: ActivityResultLauncher<Intent> = 
+
+    private val notificationPermissionLauncher: ActivityResultLauncher<String> =
+        activity.registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) {
+            permissionUpdateCallback?.invoke()
+        }
+
+    private val overlayPermissionLauncher: ActivityResultLauncher<Intent> =
         activity.registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
-        ) { 
+        ) {
             // Update permission state when user returns from system settings
             permissionUpdateCallback?.invoke()
         }
     
+    fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     /**
      * Requests overlay permission from the system.
      * Maintains exact same functionality as original implementation.

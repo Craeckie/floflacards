@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.floflacards.app.data.repository.SettingsRepository
 import com.floflacards.app.presentation.viewmodel.MainViewModel
-import com.floflacards.app.presentation.component.IntervalSelectionDialog
 import com.floflacards.app.presentation.component.PermissionDialogs
 import com.floflacards.app.presentation.component.rememberPermissionState
 import com.floflacards.app.presentation.component.LearningControls
@@ -57,7 +56,6 @@ fun MainScreen(
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val permissionState = rememberPermissionState()
-    var showIntervalSelectionDialog by remember { mutableStateOf(false) }
     
     // Responsive design utilities
     val configuration = LocalConfiguration.current
@@ -169,7 +167,17 @@ fun MainScreen(
                 activeFlashcardCount = uiState.activeFlashcardCount,
                 hasOverlayPermission = permissionState.hasOverlayPermission,
                 isSnoozing = uiState.isSnoozing,
-                onStartLearning = { showIntervalSelectionDialog = true },
+                onStartLearning = {
+                    permissionState.refreshPermissionState()
+                    if (!permissionState.hasOverlayPermission) {
+                        viewModel.setPendingInterval(uiState.selectedInterval)
+                        permissionState.setShowOverlayPermissionDialog(true)
+                    } else if (viewModel.shouldShowFirstDemo()) {
+                        OverlayService.startWithDemoFlashcard(context)
+                    } else {
+                        viewModel.startLearningWithInterval(uiState.selectedInterval)
+                    }
+                },
                 onStopLearning = { viewModel.toggleLearningService() },
                 onRequestPermission = { permissionState.setShowOverlayPermissionDialog(true) },
                 onNavigateToCards = onNavigateToSettings // Reuse existing navigation to cards
@@ -266,50 +274,8 @@ fun MainScreen(
         }
     }
     
-    // Unified Dialog System
     PermissionDialogs(
         permissionState = permissionState,
         onRequestOverlayPermission = onRequestOverlayPermission
     )
-    
-    // Backup dialogs removed - now handled in Welcome Screen
-    // This follows DRY principle by eliminating code duplication
-    
-    if (showIntervalSelectionDialog) {
-        IntervalSelectionDialog(
-            availableIntervals = viewModel.getAvailableIntervals(),
-            onConfirm = { interval ->
-                showIntervalSelectionDialog = false
-                // Check overlay permission before starting learning
-                permissionState.refreshPermissionState()
-                if (!permissionState.hasOverlayPermission) {
-                    // Store interval for later use and show permission dialog
-                    viewModel.setPendingInterval(interval)
-                    permissionState.setShowOverlayPermissionDialog(true)
-                } else {
-                    // Permission granted - check if first-time demo should be shown
-                    viewModel.updateInterval(interval) // Save interval first
-
-                    if (viewModel.shouldShowFirstDemo()) {
-                        // Show demo flashcard instead of starting timer
-                        OverlayService.startWithDemoFlashcard(context)
-                    } else {
-                        // Start regular learning session
-                        viewModel.startLearningWithInterval(interval)
-                    }
-                }
-            },
-            onShowNow = {
-                showIntervalSelectionDialog = false
-                permissionState.refreshPermissionState()
-                if (!permissionState.hasOverlayPermission) {
-                    viewModel.setPendingShowNow()
-                    permissionState.setShowOverlayPermissionDialog(true)
-                } else {
-                    viewModel.showSingleFlashcardNow()
-                }
-            },
-            onDismiss = { showIntervalSelectionDialog = false }
-        )
-    }
 }

@@ -408,6 +408,13 @@
     <string name="category_export_csv">Als CSV exportieren</string>
     <string name="category_import_csv">Aus CSV importieren</string>
 
+    <!-- Interval setting - German -->
+    <string name="settings_interval_title">Karten-Intervall</string>
+    <string name="settings_interval_description">Wie oft Lernkarten erscheinen</string>
+    <string name="settings_interval_value">%1$d min</string>
+    <string name="settings_test_popup_title">Popup testen</string>
+    <string name="settings_test_popup_description">Jetzt eine Lernkarte anzeigen</string>
+
     <!-- Snooze feature - German -->
     <string name="settings_snooze_duration_title">Schlummerdauer</string>
     <string name="settings_snooze_duration_description">Wie lange Lernkarten pausiert werden, wenn du den Schlummer-Button auf einer Karte tippst</string>

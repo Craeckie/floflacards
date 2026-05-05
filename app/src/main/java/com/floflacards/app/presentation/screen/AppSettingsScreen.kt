@@ -47,6 +47,7 @@ import android.content.pm.PackageManager
 import kotlin.math.roundToInt
 import kotlin.random.Random
 import com.floflacards.app.data.model.AppTheme
+import com.floflacards.app.util.IntervalConstants
 import com.floflacards.app.data.model.FlashcardTheme
 import com.floflacards.app.data.model.Language
 import com.floflacards.app.presentation.component.BatteryOptimizationSettingItem
@@ -81,6 +82,7 @@ fun AppSettingsScreen(
     val currentActualRetention by viewModel.actualRetention.collectAsState()
     val currentFlashcardOpacity by viewModel.flashcardOpacity.collectAsState()
     val currentSnoozeDuration by viewModel.snoozeDurationMinutes.collectAsState()
+    val currentIntervalMinutes by viewModel.intervalMinutes.collectAsState()
 
     // Refresh the actual-retention readout whenever the screen comes back into
     // the foreground — the user may have rated cards via the overlay since the
@@ -227,16 +229,48 @@ fun AppSettingsScreen(
                 }
             }
 
-            // Overlay behavior section — snooze duration + app blocklist
+            // Overlay behavior section — interval, snooze duration, test popup, app blocklist
             item {
                 AppSettingsSection(
                     title = stringResource(R.string.settings_overlay_behavior_title),
                     subtitle = stringResource(R.string.settings_overlay_behavior_subtitle)
                 ) {
+                    IntervalSettingItem(
+                        intervalMinutes = currentIntervalMinutes,
+                        onIntervalChange = { viewModel.setIntervalMinutes(it) }
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     SnoozeDurationSettingItem(
                         durationMinutes = currentSnoozeDuration,
                         onDurationChange = { viewModel.setSnoozeDurationMinutes(it) }
                     )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    FilledTonalButton(
+                        onClick = { viewModel.showSingleFlashcardNow() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.PlayArrow,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column {
+                            Text(
+                                text = stringResource(R.string.settings_test_popup_title),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = stringResource(R.string.settings_test_popup_description),
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -947,6 +981,54 @@ private fun FlashcardOpacitySettingItem(
             valueRange = 0.1f..1.0f,
             // 18 positions inclusive ⇒ 16 intermediate stops.
             steps = 16
+        )
+    }
+}
+
+/**
+ * Discrete slider for flashcard popup interval.
+ * Options match IntervalConstants.PREDEFINED_INTERVALS: 1, 5, 10, 15, 30 minutes.
+ */
+@Composable
+private fun IntervalSettingItem(
+    intervalMinutes: Int,
+    onIntervalChange: (Int) -> Unit
+) {
+    val options = IntervalConstants.PREDEFINED_INTERVALS
+    val currentIndex = options.indexOf(intervalMinutes).coerceAtLeast(0)
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.settings_interval_title),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = stringResource(R.string.settings_interval_value, options[currentIndex]),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+        Text(
+            text = stringResource(R.string.settings_interval_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+        )
+        Slider(
+            value = currentIndex.toFloat(),
+            onValueChange = { sliderValue ->
+                val index = sliderValue.roundToInt().coerceIn(0, options.lastIndex)
+                onIntervalChange(options[index])
+            },
+            valueRange = 0f..options.lastIndex.toFloat(),
+            steps = options.lastIndex - 1
         )
     }
 }
