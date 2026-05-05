@@ -17,38 +17,23 @@
 
 package com.floflacards.app.presentation.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import com.floflacards.app.R
-import com.floflacards.app.util.IntervalConstants
 
 /**
  * Unified dialog system to eliminate code duplication across the app.
@@ -104,118 +89,6 @@ fun UnifiedDialog(
             }
         }
     )
-}
-
-/**
- * Specialized dialog for interval selection.
- * Uses the unified dialog system to avoid duplication.
- * Supports predefined intervals and custom user input.
- */
-@Composable
-fun IntervalSelectionDialog(
-    availableIntervals: List<Int>,
-    onConfirm: (Int) -> Unit,
-    onShowNow: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    var isNowSelected by remember { mutableStateOf(true) }
-    var selectedInterval by remember { mutableStateOf(availableIntervals.firstOrNull() ?: IntervalConstants.DEFAULT_INTERVAL_MINUTES) }
-    var isCustomSelected by remember { mutableStateOf(false) }
-    var customIntervalText by remember { mutableStateOf("") }
-    var hasError by remember { mutableStateOf(false) }
-
-    UnifiedDialog(
-        title = stringResource(R.string.interval_dialog_title),
-        confirmButtonText = stringResource(R.string.interval_dialog_confirm),
-        dismissButtonText = stringResource(R.string.interval_dialog_cancel),
-        onConfirm = {
-            when {
-                isNowSelected -> onShowNow()
-                isCustomSelected -> IntervalConstants.parseInterval(customIntervalText)
-                    ?.let { onConfirm(it) }
-                    ?: run { hasError = true }
-                else -> onConfirm(selectedInterval)
-            }
-        },
-        onDismiss = onDismiss
-    ) {
-        Text(stringResource(R.string.interval_dialog_description))
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
-                isNowSelected = true
-                isCustomSelected = false
-                hasError = false
-            }
-        ) {
-            RadioButton(
-                selected = isNowSelected,
-                onClick = null
-            )
-            Text(stringResource(R.string.interval_now_once))
-        }
-
-        availableIntervals.forEach { interval ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
-                    isNowSelected = false
-                    selectedInterval = interval
-                    isCustomSelected = false
-                    hasError = false
-                }
-            ) {
-                RadioButton(
-                    selected = !isNowSelected && selectedInterval == interval && !isCustomSelected,
-                    onClick = null
-                )
-                Text(stringResource(R.string.interval_minutes, interval))
-            }
-        }
-
-        // Custom interval option
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable {
-                isNowSelected = false
-                isCustomSelected = true
-                hasError = false
-            }
-        ) {
-            RadioButton(
-                selected = isCustomSelected,
-                onClick = null
-            )
-            Text(stringResource(R.string.interval_custom))
-        }
-
-        // Custom interval input field (only visible when custom is selected)
-        if (isCustomSelected) {
-            Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = customIntervalText,
-                onValueChange = {
-                    customIntervalText = it.filter { char -> char.isDigit() }
-                    hasError = false
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp),
-                label = { Text(stringResource(R.string.interval_custom_hint)) },
-                placeholder = { Text(IntervalConstants.DEFAULT_INTERVAL_MINUTES.toString()) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = hasError,
-                supportingText = if (hasError) {
-                    { Text(stringResource(R.string.interval_invalid)) }
-                } else {
-                    null
-                }
-            )
-        }
-    }
 }
 
 /**

@@ -17,16 +17,21 @@
 
 package com.floflacards.app.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.floflacards.app.data.repository.FlashcardRepository
 import com.floflacards.app.data.repository.SettingsRepository
 import com.floflacards.app.data.model.AppTheme
 import com.floflacards.app.data.model.FlashcardTheme
 import com.floflacards.app.data.model.Language
 import com.floflacards.app.domain.usecase.RetentionData
 import com.floflacards.app.domain.usecase.StatisticsUseCase
+import com.floflacards.app.service.OverlayService
+import com.floflacards.app.util.IntervalConstants
 import com.floflacards.app.util.PermissionHelper
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,6 +48,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AppSettingsViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context,
+    private val repository: FlashcardRepository,
     private val settingsManager: SettingsRepository,
     private val permissionHelper: PermissionHelper,
     private val statisticsUseCase: StatisticsUseCase
@@ -105,7 +112,22 @@ class AppSettingsViewModel @Inject constructor(
     fun setSnoozeDurationMinutes(minutes: Int) {
         settingsManager.setSnoozeDurationMinutes(minutes)
     }
-    
+
+    /** Flashcard interval in minutes (from PREDEFINED_INTERVALS). */
+    val intervalMinutes: StateFlow<Int> = settingsManager.intervalMinutes
+
+    fun setIntervalMinutes(minutes: Int) {
+        if (IntervalConstants.isValidInterval(minutes)) settingsManager.setIntervalMinutes(minutes)
+    }
+
+    fun showSingleFlashcardNow() {
+        viewModelScope.launch {
+            if (!permissionHelper.hasOverlayPermission()) return@launch
+            val flashcard = repository.getNextAvailableFlashcard()
+            OverlayService.startWithFlashcard(appContext, flashcard)
+        }
+    }
+
     /**
      * Updates the app theme preference
      * CRITICAL: This will immediately change the app theme

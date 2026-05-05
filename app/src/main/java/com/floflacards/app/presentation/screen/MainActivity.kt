@@ -32,6 +32,7 @@ import com.floflacards.app.data.model.AppTheme
 import com.floflacards.app.presentation.theme.FloatingLearningTheme
 import com.floflacards.app.presentation.navigation.AppNavigation
 import com.floflacards.app.service.MorningReminderScheduler
+import com.floflacards.app.util.PermissionHelper
 import com.floflacards.app.util.PermissionLauncher
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -41,8 +42,7 @@ class MainActivity : AppCompatActivity() {
     
     // Permission handler for all permission-related functionality
     lateinit var permissionHandler: PermissionLauncher
-    
-    // Settings manager for theme preference
+
     @Inject
     lateinit var settingsManager: SettingsRepository
     
@@ -51,6 +51,10 @@ class MainActivity : AppCompatActivity() {
         
         // Initialize permission handler
         permissionHandler = PermissionLauncher(this)
+
+        if (!PermissionHelper(this).hasNotificationPermission()) {
+            permissionHandler.requestNotificationPermission()
+        }
 
         MorningReminderScheduler.schedule(this)
         

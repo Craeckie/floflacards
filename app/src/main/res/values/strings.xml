@@ -437,6 +437,13 @@
     <string name="category_export_csv">Export as CSV</string>
     <string name="category_import_csv">Import from CSV</string>
 
+    <!-- Interval setting -->
+    <string name="settings_interval_title">Flashcard Interval</string>
+    <string name="settings_interval_description">How often flashcard popups appear</string>
+    <string name="settings_interval_value">%1$d min</string>
+    <string name="settings_test_popup_title">Test Popup</string>
+    <string name="settings_test_popup_description">Show a flashcard popup now</string>
+
     <!-- Snooze feature -->
     <string name="settings_snooze_duration_title">Snooze Duration</string>
     <string name="settings_snooze_duration_description">How long to pause popups when you tap the snooze button on an overlay card</string>
