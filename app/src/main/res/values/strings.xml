@@ -354,7 +354,7 @@
     <string name="settings_manage_flashcards">Manage Flashcards</string>
     <string name="settings_loading_categories">Loading categories...</string>
     <string name="settings_no_categories_title">No categories yet</string>
-    <string name="settings_no_categories_description">Create your first category to organize your flashcards!</string>
+    <string name="settings_no_categories_description">Create a category first — you\'ll need one to import cards.</string>
     <string name="settings_create_first_category">Create First Category</string>
     <string name="settings_add_new_category">Add New Category</string>
     <string name="settings_category_name">Category Name</string>

@@ -343,7 +343,7 @@
     <string name="settings_manage_flashcards">Zarządzaj fiszkami</string>
     <string name="settings_loading_categories">Ładowanie kategorii...</string>
     <string name="settings_no_categories_title">Jeszcze nie ma kategorii</string>
-    <string name="settings_no_categories_description">Stwórz pierwszą kategorię, żeby uporządkować swoje fiszki!</string>
+    <string name="settings_no_categories_description">Najpierw stwórz kategorię — będzie potrzebna do importowania kart.</string>
     <string name="settings_create_first_category">Stwórz pierwszą kategorię</string>
     <string name="settings_add_new_category">Nowa kategoria</string>
     <string name="settings_category_name">Nazwa kategorii</string>

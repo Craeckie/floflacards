@@ -343,7 +343,7 @@
     <string name="settings_manage_flashcards">Lernkarten verwalten</string>
     <string name="settings_loading_categories">Kategorien werden geladen...</string>
     <string name="settings_no_categories_title">Noch keine Kategorien</string>
-    <string name="settings_no_categories_description">Erstelle deine erste Kategorie, um deine Lernkarten zu organisieren!</string>
+    <string name="settings_no_categories_description">Erstelle zuerst eine Kategorie — du brauchst eine, um Karten zu importieren.</string>
     <string name="settings_create_first_category">Erste Kategorie erstellen</string>
     <string name="settings_add_new_category">Neue Kategorie</string>
     <string name="settings_category_name">Kategorie-Name</string>
