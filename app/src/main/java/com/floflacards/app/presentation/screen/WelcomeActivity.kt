@@ -110,6 +110,7 @@ class WelcomeActivity : AppCompatActivity() {
             val isDarkTheme = when (currentTheme) {
                 AppTheme.LIGHT -> false
                 AppTheme.DARK -> true
+                AppTheme.BLACK -> true
                 AppTheme.SYSTEM -> isSystemInDarkTheme()
             }
             

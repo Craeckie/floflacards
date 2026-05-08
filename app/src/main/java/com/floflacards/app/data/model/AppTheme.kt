@@ -38,7 +38,12 @@ enum class AppTheme(val displayName: String) {
      * Dark theme - forces dark mode regardless of device setting
      */
     DARK("Dark"),
-    
+
+    /**
+     * Black theme - pure black background for OLED screens
+     */
+    BLACK("Black"),
+
     /**
      * System theme - follows device theme setting (default behavior)
      * Note: This will be the default to maintain current behavior

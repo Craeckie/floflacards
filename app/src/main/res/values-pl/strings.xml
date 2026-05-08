@@ -108,18 +108,22 @@
     <!-- Theme descriptions - natural Polish phrasing -->
     <string name="theme_light_description">Zawsze używaj jasnego motywu</string>
     <string name="theme_dark_description">Zawsze używaj ciemnego motywu</string>
+    <string name="theme_black_description">Czysta czerń dla ekranów OLED</string>
     <string name="theme_system_description">Zgodnie z ustawieniami urządzenia</string>
     <string name="flashcard_theme_default_description">Bieżący wygląd z ciemnym tłem</string>
     <string name="flashcard_theme_light_description">Jasne tło dla lepszej widoczności</string>
     <string name="flashcard_theme_dark_description">Ulepszony tryb ciemny z głębszymi kolorami</string>
+    <string name="flashcard_theme_black_description">Czysta czerń dla ekranów OLED</string>
     
     <!-- Theme enum display names - Polish -->
     <string name="theme_light_name">Jasny</string>
     <string name="theme_dark_name">Ciemny</string>
+    <string name="theme_black_name">Czarny (OLED)</string>
     <string name="theme_system_name">Jak urządzenie</string>
     <string name="flashcard_theme_default_name">Domyślny</string>
     <string name="flashcard_theme_light_name">Jasny</string>
     <string name="flashcard_theme_dark_name">Ciemny</string>
+    <string name="flashcard_theme_black_name">Czarny (OLED)</string>
     
     <!-- Permissions section -->
     <string name="settings_permissions_title">Uprawnienia</string>

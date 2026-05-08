@@ -38,6 +38,19 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = Color.White,
 )
 
+private val BlackColorScheme = darkColorScheme(
+    primary = Color(0xFF6200EA),
+    secondary = Color(0xFF03DAC6),
+    tertiary = Color(0xFF3700B3),
+    background = Color(0xFF000000),
+    surface = Color(0xFF0D0D0D),
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onTertiary = Color.White,
+    onBackground = Color.White,
+    onSurface = Color.White,
+)
+
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF6200EA),
     secondary = Color(0xFF03DAC6),
@@ -59,6 +72,7 @@ fun FloatingLearningTheme(
     val colorScheme = when (appTheme) {
         AppTheme.LIGHT -> LightColorScheme
         AppTheme.DARK -> DarkColorScheme
+        AppTheme.BLACK -> BlackColorScheme
         AppTheme.SYSTEM -> {
             // Only use system theme when explicitly set to SYSTEM
             if (isSystemInDarkTheme()) DarkColorScheme else LightColorScheme

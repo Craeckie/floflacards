@@ -108,18 +108,22 @@
     <!-- Theme descriptions - natural German phrasing -->
     <string name="theme_light_description">Immer helles Design verwenden</string>
     <string name="theme_dark_description">Immer dunkles Design verwenden</string>
+    <string name="theme_black_description">Reines Schwarz für OLED-Bildschirme</string>
     <string name="theme_system_description">Geräte-Einstellung folgen</string>
     <string name="flashcard_theme_default_description">Aktuelles Design mit dunklem Hintergrund</string>
     <string name="flashcard_theme_light_description">Heller Hintergrund für bessere Lesbarkeit</string>
     <string name="flashcard_theme_dark_description">Verbesserter Dunkelmodus mit tieferen Farben</string>
+    <string name="flashcard_theme_black_description">Reines Schwarz für OLED-Bildschirme</string>
     
     <!-- Theme enum display names - German -->
     <string name="theme_light_name">Hell</string>
     <string name="theme_dark_name">Dunkel</string>
+    <string name="theme_black_name">Schwarz (OLED)</string>
     <string name="theme_system_name">Wie Gerät</string>
     <string name="flashcard_theme_default_name">Standard</string>
     <string name="flashcard_theme_light_name">Hell</string>
     <string name="flashcard_theme_dark_name">Dunkel</string>
+    <string name="flashcard_theme_black_name">Schwarz (OLED)</string>
     
     <!-- Permissions section -->
     <string name="settings_permissions_title">Berechtigungen</string>

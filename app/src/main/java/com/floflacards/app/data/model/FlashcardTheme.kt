@@ -43,7 +43,12 @@ enum class FlashcardTheme(val displayName: String) {
     /**
      * Dark theme - enhanced dark mode with improved contrast
      */
-    DARK("Dark");
+    DARK("Dark"),
+
+    /**
+     * Black theme - pure black background for OLED screens
+     */
+    BLACK("Black");
     
     companion object {
         /**

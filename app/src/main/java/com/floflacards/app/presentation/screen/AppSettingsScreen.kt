@@ -638,6 +638,7 @@ fun ThemeSelectionItem(
                         text = when (theme) {
                             AppTheme.LIGHT -> stringResource(R.string.theme_light_name)
                             AppTheme.DARK -> stringResource(R.string.theme_dark_name)
+                            AppTheme.BLACK -> stringResource(R.string.theme_black_name)
                             AppTheme.SYSTEM -> stringResource(R.string.theme_system_name)
                         },
                         style = MaterialTheme.typography.bodyLarge,
@@ -648,6 +649,7 @@ fun ThemeSelectionItem(
                         text = when (theme) {
                             AppTheme.LIGHT -> stringResource(R.string.theme_light_description)
                             AppTheme.DARK -> stringResource(R.string.theme_dark_description)
+                            AppTheme.BLACK -> stringResource(R.string.theme_black_description)
                             AppTheme.SYSTEM -> stringResource(R.string.theme_system_description)
                         },
                         style = MaterialTheme.typography.bodySmall,
@@ -700,6 +702,7 @@ fun FlashcardThemeSelectionItem(
                             FlashcardTheme.DEFAULT -> stringResource(R.string.flashcard_theme_default_name)
                             FlashcardTheme.LIGHT -> stringResource(R.string.flashcard_theme_light_name)
                             FlashcardTheme.DARK -> stringResource(R.string.flashcard_theme_dark_name)
+                            FlashcardTheme.BLACK -> stringResource(R.string.flashcard_theme_black_name)
                         },
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium
@@ -710,6 +713,7 @@ fun FlashcardThemeSelectionItem(
                             FlashcardTheme.DEFAULT -> stringResource(R.string.flashcard_theme_default_description)
                             FlashcardTheme.LIGHT -> stringResource(R.string.flashcard_theme_light_description)
                             FlashcardTheme.DARK -> stringResource(R.string.flashcard_theme_dark_description)
+                            FlashcardTheme.BLACK -> stringResource(R.string.flashcard_theme_black_description)
                         },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant

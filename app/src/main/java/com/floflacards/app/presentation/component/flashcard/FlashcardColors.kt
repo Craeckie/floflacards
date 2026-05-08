@@ -69,6 +69,18 @@ object FlashcardColors {
         softWhite = Color(0xFF1C1B1F) // Rich dark text for perfect contrast
     )
     
+    // BLACK theme colors - Pure OLED black with deep purple accents
+    private val blackTheme = ThemeColors(
+        darkBackground = Color(0xFF000000), // True black for OLED
+        headerBackground = Color(0xFF0D0D0D), // Near-black header
+        questionBackground = Color(0xFF111111), // Barely-lifted black for questions
+        questionText = Color(0xFFE6E0E9), // Soft light text
+        answerBackground = Color(0xFF3B2D6B), // Deep purple on black
+        answerText = Color(0xFFD0BCFF), // Light lavender accent
+        buttonAccent = Color(0xFF7F39FB), // Bright purple button
+        softWhite = Color(0xFFE6E0E9) // Consistent refined light text
+    )
+
     // DARK theme colors - Premium deep dark with luxurious purple accents
     private val darkTheme = ThemeColors(
         darkBackground = Color(0xFF0F0D13), // Deep purple-black - premium feel
@@ -88,6 +100,7 @@ object FlashcardColors {
         FlashcardTheme.DEFAULT -> defaultTheme
         FlashcardTheme.LIGHT -> lightTheme
         FlashcardTheme.DARK -> darkTheme
+        FlashcardTheme.BLACK -> blackTheme
     }
     
     // Backward compatibility - maintain existing API using DEFAULT theme
