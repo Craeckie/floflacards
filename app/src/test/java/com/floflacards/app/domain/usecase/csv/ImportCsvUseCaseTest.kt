@@ -319,6 +319,7 @@ class FakeFlashcardDao : FlashcardDao {
         cards.count { it.categoryId == categoryId }
     override suspend fun getFlashcardsByCategorySync(categoryId: Long) =
         cards.filter { it.categoryId == categoryId }
+    override suspend fun getTotalFlashcardCount() = cards.size
 }
 
 /**
