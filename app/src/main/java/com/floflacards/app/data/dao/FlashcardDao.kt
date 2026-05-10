@@ -104,6 +104,9 @@ interface FlashcardDao {
     """)
     suspend fun getActiveFlashcardCount(): Int
 
+    @Query("SELECT COUNT(*) FROM flashcards")
+    suspend fun getTotalFlashcardCount(): Int
+
     /**
      * FSRS card-state breakdown for the stats screen. Filtered to enabled
      * flashcards in enabled categories so it matches the population the overlay

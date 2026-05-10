@@ -27,15 +27,20 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.floflacards.app.R
+import com.floflacards.app.data.repository.FlashcardRepository
 import com.floflacards.app.data.repository.SettingsRepository
 import com.floflacards.app.presentation.screen.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MorningReminderReceiver : BroadcastReceiver() {
 
     @Inject lateinit var settingsManager: SettingsRepository
+    @Inject lateinit var flashcardRepository: FlashcardRepository
 
     companion object {
         private const val TAG = "MorningReminderReceiver"
@@ -56,20 +61,29 @@ class MorningReminderReceiver : BroadcastReceiver() {
         }
 
         Log.d(TAG, "Learning is stopped — showing morning reminder notification")
-        showNotification(context)
+
+        val pending = goAsync()
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val hasCards = flashcardRepository.getTotalFlashcardCount() > 0
+                showNotification(context, hasCards)
+            } finally {
+                pending.finish()
+            }
+        }
     }
 
-    private fun showNotification(context: Context) {
+    private fun showNotification(context: Context, hasCards: Boolean) {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Morning Reminder",
+                context.getString(R.string.morning_reminder_channel_name),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Daily reminder to start your learning session"
+                description = context.getString(R.string.morning_reminder_channel_description)
                 setShowBadge(true)
             }
             notificationManager.createNotificationChannel(channel)
@@ -85,9 +99,17 @@ class MorningReminderReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        val (title, text) = if (hasCards) {
+            context.getString(R.string.morning_reminder_title_study) to
+                context.getString(R.string.morning_reminder_text_no_session)
+        } else {
+            context.getString(R.string.morning_reminder_title_add_cards) to
+                context.getString(R.string.morning_reminder_text_add_cards)
+        }
+
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("Time to study!")
-            .setContentText("Your flashcard session hasn't started today.")
+            .setContentTitle(title)
+            .setContentText(text)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(tapPendingIntent)
             .setAutoCancel(true)

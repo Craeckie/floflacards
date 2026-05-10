@@ -124,7 +124,15 @@
     <string name="flashcard_theme_light_name">Jasny</string>
     <string name="flashcard_theme_dark_name">Ciemny</string>
     <string name="flashcard_theme_black_name">Czarny (OLED)</string>
-    
+
+    <!-- Flashcard font -->
+    <string name="settings_appearance_flashcard_font">Czcionka fiszek</string>
+    <string name="settings_appearance_flashcard_font_description">Czcionka tekstu pytania i odpowiedzi. Noto Sans SC dołącza chińską czcionkę uproszczoną dla spójnego renderowania CJK.</string>
+    <string name="flashcard_font_system_name">Domyślna systemowa</string>
+    <string name="flashcard_font_system_description">Użyj domyślnej czcionki urządzenia i awaryjnej czcionki CJK</string>
+    <string name="flashcard_font_noto_sans_sc_name">Zoptymalizowana dla chińskiego</string>
+    <string name="flashcard_font_noto_sans_sc_description">Dołączona Noto Sans SC (chiński uproszczony, Noto Sans CJK)</string>
+
     <!-- Permissions section -->
     <string name="settings_permissions_title">Uprawnienia</string>
     <string name="settings_permissions_subtitle">Zarządzaj uprawnieniami i optymalizacją aplikacji</string>
@@ -464,4 +472,10 @@
     <string name="csv_import_done_button">Gotowe</string>
     <string name="csv_import_error_title">Błąd importu</string>
     <string name="csv_import_error_close">Zamknij</string>
+    <string name="morning_reminder_channel_name">Poranne przypomnienie</string>
+    <string name="morning_reminder_channel_description">Codzienne przypomnienie o rozpoczęciu sesji nauki</string>
+    <string name="morning_reminder_title_study">Czas na naukę!</string>
+    <string name="morning_reminder_text_no_session">Twoja sesja z fiszkami nie została jeszcze rozpoczęta.</string>
+    <string name="morning_reminder_title_add_cards">Zacznij budować swoją talię!</string>
+    <string name="morning_reminder_text_add_cards">Dodaj pierwsze fiszki i zacznij się uczyć.</string>
 </resources>
