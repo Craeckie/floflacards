@@ -65,6 +65,12 @@ android {
     }
 }
 
+tasks.withType<Test> {
+    listOf("http.proxyHost", "http.proxyPort", "https.proxyHost", "https.proxyPort", "http.nonProxyHosts").forEach { key ->
+        System.getProperty(key)?.let { systemProperty(key, it) }
+    }
+}
+
 dependencies {
     // Core Android
     implementation(libs.androidx.core.ktx)
