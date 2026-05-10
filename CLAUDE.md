@@ -14,7 +14,8 @@ When asked to create a release:
    - Use emojis to make entries engaging (e.g. ✨ for new features, 🐛 for bug fixes, 🎨 for visual changes, ⚡ for performance, 🌍 for translations, 🔧 for settings/config changes)
    - Omit anything invisible to users (refactors, CI, internal architecture)
    - Note: `fastlane/metadata/android/de-DE/changelogs/` exists but is often outdated; ask the user whether to add a German changelog.
-5. **Commit** both changed files (`app/build.gradle.kts` and the new changelog), then **tag** the commit: `git tag v{versionName}`.
+5. **Run the test suite** (`./gradlew test`) and fix any failures before proceeding.
+6. **Commit** both changed files (`app/build.gradle.kts` and the new changelog), then **tag** the commit: `git tag v{versionName}`.
 
 ## Git workflow
 After each change, commit it with a semantic commit message (`feat:`, `fix:`, `chore:`, etc.). **Always amend the preceding commit** unless it has already been pushed, or the new change is about an unrelated feature, aspect, or part of the app/code. To undo a commit that has not been pushed, drop it from history (reset/rebase) rather than creating a revert commit. Never force-push.
