@@ -17,6 +17,9 @@ When asked to create a release:
 5. **Run the test suite** (`./gradlew test`) and fix any failures before proceeding.
 6. **Commit** both changed files (`app/build.gradle.kts` and the new changelog), then **tag** the commit: `git tag v{versionName}`.
 
+## README
+After implementing a new feature or making a significant change that users would notice, suggest updating the `README.md` — specifically the **Features** or **Added in this fork** section as appropriate.
+
 ## Git workflow
 After each change, commit it with a semantic commit message (`feat:`, `fix:`, `chore:`, etc.). **Always amend the preceding commit** unless it has already been pushed, or the new change is about an unrelated feature, aspect, or part of the app/code. **Amend is the default; a new commit is the exception.** When in doubt, amend. To undo a commit that has not been pushed, drop it from history (reset/rebase) rather than creating a revert commit. Never force-push.
 
