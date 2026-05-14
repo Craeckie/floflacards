@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.floflacards.app.presentation.component.getLightModeOnlyBorder
 import androidx.compose.ui.res.stringResource
+import coil.compose.AsyncImage
 import com.floflacards.app.R
 import com.floflacards.app.presentation.component.text.AutoSizeText
 
@@ -69,6 +70,14 @@ fun ModernHeaderSection(
                 .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            AsyncImage(
+                model = R.mipmap.ic_launcher_round,
+                contentDescription = null,
+                modifier = Modifier.size(64.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = stringResource(R.string.home_header_title),
                 style = MaterialTheme.typography.headlineMedium.copy(
