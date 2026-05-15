@@ -1,0 +1,16 @@
+Version 2.2.0
+
+✨ New look
+🎨 App rebranded as CardPop with a new flashcard launcher icon
+🎨 New teal & blue color palette across the whole app — replaces the old purple theme
+🖼️ Main screen now shows the CardPop logo in the header
+📊 Statistics screen — "Card States" card is now full-width with a clearer title
+
+🔧 Customization
+🅰️ Optional custom Chinese font — import your own font file instead of using the bundled one
+📝 Font size setting now goes up to 40 sp; flashcards have more room thanks to reduced padding
+🌏 Font option renamed to Default / Chinese; Pleco lookup now only shows in Chinese mode
+
+🐛 Fixes
+🪟 Overlay opacity now updates instantly when you change the setting
+🔘 Slimmer rating buttons on the overlay for a tidier layout
