@@ -41,9 +41,8 @@ CardPop helps you learn **passively** while using your phone. Flashcards will ap
 ### Added in this fork
 - 🧠 **FSRS v6 spaced repetition** — cards are scheduled using [FSRS](https://github.com/open-spaced-repetition/fsrs4anki), the algorithm that powers the newest Anki scheduler. Intervals adapt to your performance, with configurable target retention (80–95 %, default 90 %).
 - 📦 **Anki import** — import `.apkg` decks from Anki Web
-- 📊 **Statistics screen** — review history chart (last 30 days) and rating distribution chart
-- 📤 **CSV import & export** — two-column CSV (front, back) with a preview before saving
-- 💾 **Automatic backup** — every card change is immediately backed up as a JSON file via Android’s Storage Access Framework
+- 📊 **More statistics** — review history chart (last 30 days) and rating distribution chart
+- 💾 **Backup includes settings** — every card change is immediately backed up as a JSON file (including app settings) via Android’s Storage Access Framework
 - 😴 **Snooze** — pause the overlay for a configurable number of minutes
 - 🚫 **App blocklist** — suppress the overlay while specific apps are in the foreground
 - 🔍 **Pleco lookup** — tap a button on the overlay to look up the front side in the Pleco dictionary app
