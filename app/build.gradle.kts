@@ -15,8 +15,8 @@ android {
         applicationId = "com.floflacards.app"
         minSdk = 24
         targetSdk = 36
-        versionCode = 16
-        versionName = (project.findProperty("versionName") as String?) ?: "2.2.0"
+        versionCode = 17
+        versionName = (project.findProperty("versionName") as String?) ?: "2.2.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
